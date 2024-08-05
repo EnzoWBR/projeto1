@@ -6,14 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landing Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --color-primary: #0064c9;
             --color-secondary: #003366;
             --color-text: #333;
-            --color-accent: #0064c9;
-            --color-bg-light: #c6c6c6;
+            --color-accent: #0099ff;
+            --color-bg-light: #f5f5f5;
             --font-primary: "Roboto", sans-serif;
             --font-secondary: "Roboto Slab", serif;
         }
@@ -29,38 +28,28 @@
 
         header {
             background: var(--color-secondary);
-            /* Igual ao fundo do footer */
             color: var(--color-primary);
-            /* Igual à cor do texto do footer */
             text-align: center;
-            /* Igual ao footer para alinhamento do texto */
-            padding: 2rem 1rem;
-            /* Igual ao padding do footer */
+            padding: 1rem 1.5rem;
             margin-bottom: 2rem;
-            /* Adiciona um espaço abaixo do header semelhante ao footer */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            /* Igual ao footer */
-            font-size: 1.5rem;
-            /* Aumenta o tamanho das palavras no header */
+            font-size: 1.2rem;
         }
 
         nav ul {
             list-style-type: none;
             display: flex;
             justify-content: center;
-            /* Centraliza os itens no header como no footer */
             margin: 0;
             padding: 0;
         }
 
         nav li {
             margin: 0 1rem;
-            /* Adiciona espaço entre os itens do menu */
         }
 
         nav a {
             color: var(--color-primary);
-            /* Igual à cor dos links do footer */
             text-decoration: none;
             font-weight: bold;
             transition: color 0.3s;
@@ -68,38 +57,33 @@
 
         nav a:hover {
             color: var(--color-accent);
-            /* Igual ao hover dos links do footer */
         }
 
         .social-icons {
             margin-top: 1rem;
-            /* Adiciona espaço acima dos ícones sociais no header */
         }
 
         .social-icons a {
             color: var(--color-primary);
-            /* Igual à cor dos ícones sociais do footer */
             text-decoration: none;
             font-size: 1.5rem;
             margin: 0 0.5rem;
-            /* Espaçamento entre os ícones sociais */
             transition: color 0.3s;
         }
 
         .social-icons a:hover {
             color: var(--color-accent);
-            /* Igual ao hover dos ícones sociais do footer */
         }
 
         .carousel {
             position: relative;
             overflow: hidden;
-            max-width: 50%;
+            max-width: 90%;
             margin: 2rem auto;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            height: 500px;
-            /* Ajuste a altura conforme necessário */
+            height: 600px; /* Aumenta a altura do carrossel */
+            background: #fff;
         }
 
         .carousel .slides {
@@ -111,21 +95,21 @@
         .carousel .slide {
             min-width: 100%;
             box-sizing: border-box;
+            position: relative;
         }
 
         .carousel .slide img {
             width: 100%;
             height: 100%;
-            /* Ajustado para preencher o container */
             object-fit: cover;
         }
 
         .carousel-control {
             position: absolute;
             top: 50%;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(0, 0, 0, 0.6);
+            width: 50px; /* Aumenta o tamanho dos controles */
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.5);
             color: white;
             border: none;
             border-radius: 50%;
@@ -133,7 +117,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 2rem;
             z-index: 10;
             transition: background-color 0.3s, transform 0.3s;
         }
@@ -152,7 +136,7 @@
         }
 
         .content {
-            padding: 2rem 2rem 4rem;
+            padding: 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -160,11 +144,11 @@
         .block {
             display: flex;
             align-items: center;
-            margin-bottom: 3rem;
-            background: #c6c6c6;
+            margin-bottom: 2rem;
+            background: #fff;
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
@@ -173,14 +157,15 @@
         }
 
         .block img {
-            max-width: 100%;
+            max-width: 50%; /* Aumenta o tamanho das imagens na seção block */
             height: auto;
-            margin-right: 2rem;
+            margin-right: 10rem;
+            margin-left: 10rem;
             border-radius: 10px;
         }
 
         .block:hover {
-            transform: scale(1.05);
+            transform: scale(1.03);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
@@ -203,7 +188,7 @@
         }
 
         .text p {
-            font-size: 1.5rem;
+            font-size: 1rem;
             line-height: 1.6;
         }
 
@@ -213,18 +198,20 @@
             text-align: center;
             padding: 2rem 1rem;
             margin-top: 2rem;
+            position: relative;
         }
 
-        .social-icons a {
-            margin: 0 10px;
-            color: var(--color-primary);
-            text-decoration: none;
-            font-size: 1.5rem;
-            transition: color 0.3s;
+        footer .social-icons {
+            margin-top: 1rem;
         }
 
-        .social-icons a:hover {
-            color: var(--color-accent);
+        footer .social-icons a {
+            margin: 0 0.5rem;
+        }
+
+        footer .contact-info {
+            margin-top: 1rem;
+            font-size: 0.9rem;
         }
 
         label {
@@ -264,8 +251,8 @@
             }
 
             .block img {
+                max-width: 80%; /* Ajusta o tamanho da imagem em dispositivos móveis */
                 margin: 0;
-                max-width: 100%;
             }
 
             .text,
@@ -292,18 +279,17 @@
 
     <section id="carousel" class="carousel">
         <div class="slides">
-            <div class="slide"><img src="students4.jpg" alt="Imagem 1"></div>
-            <div class="slide"><img src="students2.jpg" alt="Imagem 2"></div>
-            <div class="slide"><img src="students3.jpg" alt="Imagem 3"></div>
+            <div class="slide"><img src="students4.jpg" alt="Imagem 1"><div class="caption">Imagem 1</div></div>
+            <div class="slide"><img src="students2.jpg" alt="Imagem 2"><div class="caption">Imagem 2</div></div>
+            <div class="slide"><img src="students3.jpg" alt="Imagem 3"><div class="caption">Imagem 3</div></div>
         </div>
         <button class="carousel-control prev" aria-label="Slide anterior"><i class="fas fa-chevron-left"></i></button>
         <button class="carousel-control next" aria-label="Próximo slide"><i class="fas fa-chevron-right"></i></button>
     </section>
-    </section>
 
     <section id="info" class="content">
         <div class="block">
-            <img src="students5.jpg" alt="Imagem">
+            <img src="students6.jpg" alt="Imagem">
             <div class="text">
                 <h2>Informações</h2>
                 <h3>Um pouco mais sobre nós</h3>
@@ -351,12 +337,10 @@
                 <h2>Formulário</h2>
                 <form id="contact-form">
                     <label for="name">Nome</label>
-                    <input type="text" id="name" name="name" pattern="[A-Za-z\s]+"
-                        title="O nome deve conter apenas letras e espaços" required>
+                    <input type="text" id="name" name="name" pattern="[A-Za-z\s]+" placeholder="Digite seu nome" title="O nome deve conter apenas letras e espaços" required>
 
                     <label for="phone">Telefone</label>
-                    <input type="text" id="phone" name="phone" pattern="\d*"
-                        title="O telefone deve conter apenas números" required>
+                    <input type="text" id="phone" name="phone" pattern="\d*" placeholder="Digite seu telefone" title="O telefone deve conter apenas números" required>
 
                     <button type="submit">Enviar</button>
                 </form>
@@ -368,8 +352,10 @@
         <p>&copy; 2024 Academia Washington. Todos os direitos reservados.</p>
         <div class="social-icons">
             <a href="https://www.instagram.com" target="_blank" class="fab fa-instagram" aria-label="Instagram"></a>
-            <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" class="fas fa-envelope"
-                aria-label="Email"></a>
+            <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" class="fas fa-envelope" aria-label="Email"></a>
+        </div>
+        <div class="contact-info">
+            <p>Para mais informações, entre em contato conosco pelo email <a href="mailto:contato@academiawashington.com">contato@academiawashington.com</a></p>
         </div>
     </footer>
 
@@ -399,10 +385,10 @@
             prevButton.addEventListener('click', showPrevSlide);
             nextButton.addEventListener('click', showNextSlide);
 
-            // Auto-slide every 3 seconds
+            // Auto-slide every 5 seconds
             setInterval(() => {
                 showNextSlide();
-            }, 3000);
+            }, 5000);
 
             // Formulário
             const form = document.getElementById('contact-form');
