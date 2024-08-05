@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +40,7 @@
             /* Adiciona um espaço abaixo do header semelhante ao footer */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             /* Igual ao footer */
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             /* Aumenta o tamanho das palavras no header */
         }
 
@@ -91,11 +94,11 @@
         .carousel {
             position: relative;
             overflow: hidden;
-            max-width: 100%;
+            max-width: 50%;
             margin: 2rem auto;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            height: 300px;
+            height: 500px;
             /* Ajuste a altura conforme necessário */
         }
 
@@ -200,8 +203,8 @@
         }
 
         .text p {
-            font-size: 1.2rem;
-            line-height: 1.8;
+            font-size: 1.5rem;
+            line-height: 1.6;
         }
 
         footer {
@@ -273,6 +276,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <nav>
@@ -288,10 +292,13 @@
 
     <section id="carousel" class="carousel">
         <div class="slides">
-            <img src="students4.jpg" alt="Imagem 1">
-            <img src="students2.jpg" alt="Imagem 2">
-            <img src="students3.jpg" alt="Imagem 3">
+            <div class="slide"><img src="students4.jpg" alt="Imagem 1"></div>
+            <div class="slide"><img src="students2.jpg" alt="Imagem 2"></div>
+            <div class="slide"><img src="students3.jpg" alt="Imagem 3"></div>
         </div>
+        <button class="carousel-control prev" aria-label="Slide anterior"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-control next" aria-label="Próximo slide"><i class="fas fa-chevron-right"></i></button>
+    </section>
     </section>
 
     <section id="info" class="content">
@@ -300,15 +307,25 @@
             <div class="text">
                 <h2>Informações</h2>
                 <h3>Um pouco mais sobre nós</h3>
-                <p>A Academia Washington é uma instituição renomada, dedicada ao desenvolvimento acadêmico e profissional dos seus alunos. Com anos de experiência no setor educacional, a Academia oferece uma ampla gama de cursos e treinamentos voltados para diversas áreas do conhecimento.
+                <p>A Academia Washington é uma instituição renomada, dedicada ao desenvolvimento acadêmico e
+                    profissional dos seus alunos. Com anos de experiência no setor educacional, a Academia oferece uma
+                    ampla gama de cursos e treinamentos voltados para diversas áreas do conhecimento.
 
-                Nossa missão é proporcionar uma educação de alta qualidade, com métodos de ensino inovadores e infraestrutura moderna. Contamos com um corpo docente altamente qualificado, composto por professores experientes e comprometidos com o sucesso dos alunos.
+                    Nossa missão é proporcionar uma educação de alta qualidade, com métodos de ensino inovadores e
+                    infraestrutura moderna. Contamos com um corpo docente altamente qualificado, composto por
+                    professores experientes e comprometidos com o sucesso dos alunos.
 
-                Na Academia Washington, acreditamos que a educação é a chave para um futuro promissor. Por isso, oferecemos cursos que vão desde a educação básica até a formação profissional, sempre focados nas necessidades do mercado de trabalho atual.
+                    Na Academia Washington, acreditamos que a educação é a chave para um futuro promissor. Por isso,
+                    oferecemos cursos que vão desde a educação básica até a formação profissional, sempre focados nas
+                    necessidades do mercado de trabalho atual.
 
-                Nossos programas são projetados para promover a aprendizagem contínua, o desenvolvimento de habilidades críticas e o crescimento pessoal de cada estudante. Além disso, proporcionamos um ambiente acolhedor e estimulante, onde os alunos podem se sentir seguros e motivados a alcançar seus objetivos.
+                    Nossos programas são projetados para promover a aprendizagem contínua, o desenvolvimento de
+                    habilidades críticas e o crescimento pessoal de cada estudante. Além disso, proporcionamos um
+                    ambiente acolhedor e estimulante, onde os alunos podem se sentir seguros e motivados a alcançar seus
+                    objetivos.
 
-                Venha fazer parte da Academia Washington e descubra como podemos ajudar você a construir um futuro brilhante e cheio de oportunidades!</p>
+                    Venha fazer parte da Academia Washington e descubra como podemos ajudar você a construir um futuro
+                    brilhante e cheio de oportunidades!</p>
             </div>
         </div>
     </section>
@@ -318,7 +335,10 @@
             <div class="text">
                 <h2>Sobre nós</h2>
                 <h3>Venha nos conhecer</h3>
-                <p>Em um mundo cada vez mais digital, a eficiência e a organização são fundamentais para o sucesso de qualquer instituição educacional. Um site dedicado ao cadastro de alunos é uma ferramenta essencial que pode transformar a gestão acadêmica e oferecer uma série de benefícios tanto para a administração quanto para os próprios alunos.</p>
+                <p>Em um mundo cada vez mais digital, a eficiência e a organização são fundamentais para o sucesso de
+                    qualquer instituição educacional. Um site dedicado ao cadastro de alunos é uma ferramenta essencial
+                    que pode transformar a gestão acadêmica e oferecer uma série de benefícios tanto para a
+                    administração quanto para os próprios alunos.</p>
             </div>
             <img src="students2.jpg" alt="Imagem">
         </div>
@@ -329,11 +349,15 @@
             <img src="students4.jpg" alt="Imagem">
             <div class="form">
                 <h2>Formulário</h2>
-                <form>
+                <form id="contact-form">
                     <label for="name">Nome</label>
-                    <input type="text" id="name" name="name">
+                    <input type="text" id="name" name="name" pattern="[A-Za-z\s]+"
+                        title="O nome deve conter apenas letras e espaços" required>
+
                     <label for="phone">Telefone</label>
-                    <input type="text" id="phone" name="phone">
+                    <input type="text" id="phone" name="phone" pattern="\d*"
+                        title="O telefone deve conter apenas números" required>
+
                     <button type="submit">Enviar</button>
                 </form>
             </div>
@@ -343,7 +367,88 @@
     <footer id="footer">
         <p>&copy; 2024 Academia Washington. Todos os direitos reservados.</p>
         <div class="social-icons">
-            <a href="https://www.instagram.com" target="_blank" class="fab fa-instagram"></a>
-            <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" class="fas fa-envelope"></a>
+            <a href="https://www.instagram.com" target="_blank" class="fab fa-instagram" aria-label="Instagram"></a>
+            <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" class="fas fa-envelope"
+                aria-label="Email"></a>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelector('.slides');
+            const slideCount = document.querySelectorAll('.slide').length;
+            const prevButton = document.querySelector('.carousel-control.prev');
+            const nextButton = document.querySelector('.carousel-control.next');
+            let currentIndex = 0;
+
+            function updateCarousel() {
+                const offset = -currentIndex * 100;
+                slides.style.transform = `translateX(${offset}%)`;
+            }
+
+            function showPrevSlide() {
+                currentIndex = (currentIndex - 1 + slideCount) % slideCount;
+                updateCarousel();
+            }
+
+            function showNextSlide() {
+                currentIndex = (currentIndex + 1) % slideCount;
+                updateCarousel();
+            }
+
+            prevButton.addEventListener('click', showPrevSlide);
+            nextButton.addEventListener('click', showNextSlide);
+
+            // Auto-slide every 3 seconds
+            setInterval(() => {
+                showNextSlide();
+            }, 3000);
+
+            // Formulário
+            const form = document.getElementById('contact-form');
+            const nameInput = document.getElementById('name');
+            const phoneInput = document.getElementById('phone');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); // Evita o envio padrão do formulário
+
+                // Valida o formulário
+                if (!form.checkValidity()) {
+                    alert('Por favor, preencha o formulário corretamente.');
+                    return;
+                }
+
+                // Coleta os dados do formulário
+                const formData = new FormData(form);
+
+                // Cria uma requisição para enviar os dados
+                fetch('https://webhooks.workflows.wsmart.tec.br/webhook/eef8e3e1-4808-407b-b983-658dfa8ab786', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert('Formulário enviado com sucesso!');
+                        form.reset(); // Reseta o formulário após o envio
+                    })
+                    .catch(error => {
+                        console.error('Erro ao enviar o formulário:', error);
+                        alert('Ocorreu um erro ao enviar o formulário.');
+                    });
+            });
+
+            // Validação adicional
+            nameInput.addEventListener('input', function () {
+                const value = this.value;
+                this.value = value.replace(/[^A-Za-z\s]/g, ''); // Remove qualquer caractere que não seja letra ou espaço
+            });
+
+            phoneInput.addEventListener('input', function () {
+                const value = this.value;
+                this.value = value.replace(/[^\d]/g, ''); // Remove qualquer caractere que não seja número
+            });
+        });
+    </script>
+</body>
+
+</html>
