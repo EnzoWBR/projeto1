@@ -1,371 +1,222 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Academia Washington</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
     <style>
-        :root {
-            --color-primary: #0064c9;
-            --color-secondary: #003366;
-            --color-text: #333;
-            --color-accent: #0099ff;
-            --color-bg-light: #c6c6c6;
-            --color-bg-dark: #1a1a1a;
-            --color-gold: #d4af37;
-            --font-primary: "Roboto", sans-serif;
-            --font-secondary: "Roboto Slab", serif;
-        }
-
         body {
-            font-family: var(--font-primary);
+            font-family: 'Roboto', sans-serif;
             margin: 0;
-            padding: 0;
-            color: var(--color-text);
-            background: var(--color-bg-light);
-            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
         }
-
         header {
-            background: linear-gradient(to bottom, var(--color-primary), var(--color-bg-light));
-            color: var(--color-primary);
+            background: #003366;
+            color: #fff;
+            padding: 1rem 0;
             text-align: center;
-            padding: 1rem 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            font-size: 1.2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
-        nav ul {
-            list-style-type: none;
-            display: flex;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
-            flex-wrap: wrap; /* Permite que os itens se movam para a linha seguinte se necessário */
-        }
-
-        nav li {
-            margin: 0.5rem 1rem; /* Ajusta a margem para telas menores */
-        }
-
-        nav a {
-            color: var(--color-primary);
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--color-accent);
-        }
-
-        .social-icons {
-            margin-top: 1rem;
-        }
-
-        .social-icons a {
-            color: var(--color-primary);
-            text-decoration: none;
-            font-size: 1.5rem;
-            margin: 0 0.5rem;
-            transition: color 0.3s;
-        }
-
-        .social-icons a:hover {
-            color: var(--color-accent);
-        }
-
-        .carousel {
-            position: relative;
-            overflow: hidden;
-            max-width: 100%;
-            margin: 2rem auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            height: 400px;
-            background: #c6c6c6;
-        }
-
-        .carousel .slides {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-            width: 100%;
-        }
-
-        .carousel .slide {
-            min-width: 100%;
-            box-sizing: border-box;
-            position: relative;
-        }
-
-        .carousel .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .carousel-control {
-            position: absolute;
-            top: 50%;
-            width: 50px;
-            height: 50px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: var(--color-bg-light);
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            z-index: 10;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        .carousel-control:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-            transform: scale(1.1);
-        }
-
-        .carousel-control.prev {
-            left: 10px;
-        }
-
-        .carousel-control.next {
-            right: 10px;
-        }
-
-        .content {
-            padding: 0rem;
-            max-width: 1356px;
-            margin: 0 auto;
-        }
-
-        .block {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-            background: #c6c6c6;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .block:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-
-        .block img {
-            max-width: 50%;
-            height: auto;
-            margin: 0 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .block:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .text,
-        .form {
-            max-width: 100%;
-        }
-
-        .text h2,
-        .form h2 {
-            font-family: var(--font-secondary);
-            color: var(--color-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .text h3 {
-            font-family: var(--font-primary);
-            color: var(--color-accent);
-            margin-bottom: 1rem;
-        }
-
-        .text p {
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        footer {
-            background: var(--color-secondary);
-            color: var(--color-primary);
-            text-align: center;
-            padding: 2rem 1rem;
-            margin-top: 2rem;
-            position: relative;
-            border-top: 4px solid var(--color-gold);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        footer .social-icons {
-            margin-top: 1rem;
+        nav {
+            background: #0055a5;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(150, 133, 133, 0.1);
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
         }
-
-        footer .social-icons a {
-            margin: 0.5rem;
+        nav a {
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: 700;
+            flex: 1;
+            text-align: center;
+            flex-wrap: wrap;
         }
-
-        footer .contact-info {
-            margin-top: 1rem;
-            font-size: 0.9rem;
+        nav a:hover {
+            background: #004080;
         }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
+        .container {
+            max-width: 1365px;
+            margin: 1rem auto;
         }
-
-        input[type="text"] {
+        .course {
+            background: #fff;
+            padding: 1.5rem; /* Reduzido de 2rem para 1.5rem */
+            margin-bottom: 1.5rem; /* Reduzido de 2rem para 1.5rem */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            flex-wrap: wrap;
+        }
+        .course:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .course h2 {
+            margin-top: 0;
+            color: #003366;
+        }
+        .course p {
+            line-height: 1.8;
+        }
+        .course-img, .additional-img {
+            width: 45%;
+            height: auto;
+            padding: 2px; /* Reduzido de 5px para 2px */
+            border-radius: 8px;
+        }
+        footer {
+            background: #003366;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            position: relative;
+            bottom: 0;
             width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--color-primary);
-            border-radius: 4px;
-            font-size: 1rem;
         }
-
-        button {
-            background: var(--color-accent);
-            color: white;
-            padding: 0.75rem 1.5rem;
+        .slick-slide img {
+            margin: auto;
+            width: 100%;
+            height: auto;
+        }
+        .social-icons a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form input, form button {
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        form button {
+            background: #0055a5;
+            color: #fff;
             border: none;
-            border-radius: 4px;
             cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
         }
-
-        button:hover {
-            background: var(--color-primary);
-            transform: scale(1.05);
+        form button:hover {
+            background: #004080;
         }
 
         @media (max-width: 768px) {
-            .block {
+            header {
+                padding: 0.5rem 0;
+                font-size: 1.5rem;
+            }
+            .course {
                 flex-direction: column;
                 text-align: center;
             }
-
-            .block img {
-                max-width: 80%;
-                margin: 0;
+            .course-img, .additional-img {
+                width: 80%;
+                margin-bottom: 0.5rem; /* Ajustado para menor distância entre imagens */
             }
-
-            .text,
-            .form {
-                max-width: 100%;
-                padding: 0;
+            nav {
+                flex-direction: column;
             }
-
-            .carousel {
-                height: 200px;
+            nav a {
+                padding: 15px;
+                font-size: 1.5rem;
             }
+        }
 
-            .carousel .slide img {
-                object-fit: contain;
+        @media (max-width: 480px) {
+            header {
+                padding: 0.5rem 0;
+                font-size: 1.2rem;
             }
-
-            nav ul {
-                flex-direction: column; /* Muda a direção dos itens para coluna em telas menores */
-                padding: 0;
+            .course-img, .additional-img {
+                width: 100%;
+                margin-bottom: 0.5rem; /* Ajustado para menor distância entre imagens */
             }
-
-            nav li {
-                margin: 0.5rem 0; /* Ajusta a margem para colunas */
+            form input, form button {
+                font-size: 0.9rem;
+            }
+            .social-icons a {
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
-
 <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="#carousel">Carrossel</a></li>
-                <li><a href="#info">Informações</a></li>
-                <li><a href="#about">Sobre nós</a></li>
-                <li><a href="#form">Formulário</a></li>
-                <li><a href="#footer">Saiba mais</a></li>
-            </ul>
-        </nav>
+        <h1>Academia Washington</h1>
     </header>
-
-    <section id="carousel" class="carousel">
-        <div class="slides">
-            <div class="slide"><img src="students12.png" alt="Imagem 1"></div>
-            <div class="slide"><img src="students8.png" alt="Imagem 2"></div>
-            <div class="slide"><img src="students9.png" alt="Imagem 3"></div>
+    <nav>
+        <a href="#carousel">Carousel</a>
+        <a href="#kids">Washington Kids</a>
+        <a href="#juniors">Washington Juniors</a>
+        <a href="#prime">Washington Prime</a>
+        <a href="#advanced">Washington Advanced</a>
+        <a href="#formulario">Formulário</a>
+    </nav>
+    <div class="container">
+        <div id="carousel" class="carousel">
+            <div><img src="students10.png" alt="Slide 1"></div>
+            <div><img src="students11.png" alt="Slide 2"></div>
+            <div><img src="students12.png" alt="Slide 3"></div>
         </div>
-        <button class="carousel-control prev" aria-label="Slide anterior"><i class="fas fa-chevron-left"></i></button>
-        <button class="carousel-control next" aria-label="Próximo slide"><i class="fas fa-chevron-right"></i></button>
-    </section>
-
-    <section id="info" class="content">
-        <div class="block">
-            <img src="students10.png" alt="Imagem">
-            <div class="text">
-                <h2>Informações</h2>
-                <h3>Um pouco mais sobre nós</h3>
-                <p>A Academia Washington é uma instituição renomada, dedicada ao desenvolvimento acadêmico e
-                    profissional dos seus alunos. Com anos de experiência no setor educacional, a Academia oferece uma
-                    ampla gama de cursos e treinamentos voltados para diversas áreas do conhecimento.
-
-                    Na Academia Washington, acreditamos que a educação é a chave para um futuro promissor. Por isso,
-                    oferecemos cursos que vão desde a educação básica até a formação profissional, sempre focados nas
-                    necessidades do mercado de trabalho atual.
-
-                    Nossos programas são projetados para promover a aprendizagem contínua, o desenvolvimento de
-                    habilidades críticas e o crescimento pessoal de cada estudante. </p>
+        <div id="kids" class="course">
+            <img src="students16.png" alt="Washington Kids" class="course-img">
+            <img src="escola.jpg" alt="Imagem Adicional" class="additional-img">
+            <div>
+                <h2>Washington Kids</h2>
+                <p>Aprendizado lúdico e divertido para que as crianças aprendam a se expressar em diferentes contextos. Nossos métodos envolvem atividades criativas e interativas, projetadas para estimular a curiosidade e o entusiasmo das crianças pela aprendizagem.</p>
             </div>
         </div>
-    </section>
-
-    <section id="about" class="content">
-        <div class="block">
-            <div class="text">
-                <h2>Sobre nós</h2>
-                <h3>Venha nos conhecer:</h3>
-                <p>Em um mundo cada vez mais digital, a eficiência e a organização são fundamentais para o sucesso de
-                    qualquer instituição educacional. Um site dedicado ao cadastro de alunos é uma ferramenta essencial
-                    que pode transformar a gestão acadêmica e oferecer uma série de benefícios tanto para a
-                    administração quanto para os próprios alunos.</p>
+        <div id="juniors" class="course">
+            <img src="escola1.jpg" alt="Imagem Adicional" class="additional-img">
+            <img src="students15.png" alt="Washington Juniors" class="course-img">
+            <div>
+                <h2>Washington Juniors</h2>
+                <p>Especial para pré-adolescentes e preparatório para o nível Washington Prime. O curso oferece um ambiente de aprendizado dinâmico e estruturado para desenvolver habilidades avançadas em linguagem e comunicação, preparando os alunos para desafios mais complexos.</p>
             </div>
-            <img src="students11.png" alt="Imagem">
         </div>
-    </section>
-
-    <section id="form" class="content">
-        <div class="block">
-            <img src="students12.png" alt="Imagem">
-            <div class="form">
+        <div id="prime" class="course">
+            <img src="students13.png" alt="Washington Prime" class="course-img">
+            <img src="escola2.jpg" alt="Imagem Adicional" class="additional-img">
+            <div>
+                <h2>Washington Prime</h2>
+                <p>Focado na fluência em todas as habilidades: fala, leitura, escrita e audição. Este curso é ideal para quem deseja alcançar um nível avançado de proficiência, com uma abordagem equilibrada que promove o desenvolvimento integral do aluno.</p>
+            </div>
+        </div>
+        <div id="advanced" class="course">
+            <img src="escola.jpg" alt="Imagem Adicional" class="additional-img">
+            <img src="students14.png" alt="Washington Advanced" class="course-img">
+            <div>
+                <h2>Washington Advanced</h2>
+                <p>Curso para aprimorar o nível avançado da língua inglesa. Ideal para aqueles que buscam um desafio maior e desejam alcançar um domínio completo do idioma, tanto em contextos acadêmicos quanto profissionais.</p>
+            </div>
+        </div>
+        <div id="formulario" class="course">
+            <img src="Selo-ABF-1.jpg" alt="Formulário" style="width: 80%; height: auto; border-radius: 8px;">
+            <div>
                 <h2>Formulário</h2>
-                <form id="contact-form">
-                    <label for="name">Nome:</label>
-                    <input type="text" id="name" name="name" pattern="[A-Za-z\s]+" placeholder="Digite seu nome" title="O nome deve conter apenas letras e espaços" required>
-
-                    <label for="phone">Telefone:</label>
-                    <input type="text" id="phone" name="phone" pattern="\d*" placeholder="Digite seu telefone" title="O telefone deve conter apenas números" required>
-
+                <form id="contactForm" action="https://webhooks.workflows.wsmart.tec.br/webhook/eef8e3e1-4808-407b-b983-658dfa8ab786" method="POST">
+                    <input type="text" id="name" name="name" placeholder="Digite seu nome aqui" required>
+                    <input type="text" id="phone" name="phone" placeholder="xx xxxxx-xxxx" required>
                     <button type="submit">Enviar</button>
                 </form>
             </div>
         </div>
-    </section>
-
+    </div>
     <footer id="footer">
         <p>&copy; 2024 Academia Washington. Todos os direitos reservados.</p>
         <div class="social-icons">
@@ -373,83 +224,45 @@
             <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" class="fas fa-envelope" aria-label="Email"></a>
         </div>
     </footer>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const slides = document.querySelector('.slides');
-            const slideCount = document.querySelectorAll('.slide').length;
-            const prevButton = document.querySelector('.carousel-control.prev');
-            const nextButton = document.querySelector('.carousel-control.next');
-            let currentIndex = 0;
-
-            function updateCarousel() {
-                const offset = -currentIndex * 100;
-                slides.style.transform = `translateX(${offset}%)`;
-            }
-
-            function showPrevSlide() {
-                currentIndex = (currentIndex - 1 + slideCount) % slideCount;
-                updateCarousel();
-            }
-
-            function showNextSlide() {
-                currentIndex = (currentIndex + 1) % slideCount;
-                updateCarousel();
-            }
-
-            prevButton.addEventListener('click', showPrevSlide);
-            nextButton.addEventListener('click', showNextSlide);
-
-            // Auto-slide every 5 seconds
-            setInterval(() => {
-                showNextSlide();
-            }, 5000);
-
-            // Formulário
-            const form = document.getElementById('contact-form');
-            const nameInput = document.getElementById('name');
-            const phoneInput = document.getElementById('phone');
-
-            form.addEventListener('submit', function (e) {
-                e.preventDefault(); // Evita o envio padrão do formulário
-
-                // Valida o formulário
-                if (!form.checkValidity()) {
-                    alert('Por favor, preencha o formulário corretamente.');
-                    return;
-                }
-
-                // Coleta os dados do formulário
-                const formData = new FormData(form);
-
-                // Cria uma requisição para enviar os dados
-                fetch('https://webhooks.workflows.wsmart.tec.br/webhook/eef8e3e1-4808-407b-b983-658dfa8ab786', {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        alert('Formulário enviado com sucesso!');
-                        form.reset(); // Reseta o formulário após o envio
-                    })
-                    .catch(error => {
-                        console.error('Erro ao enviar o formulário:', error);
-                        alert('Ocorreu um erro ao enviar o formulário.');
-                    });
+        $(document).ready(function(){
+            $('.carousel').slick({
+                dots: true,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                responsive: [
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            arrows: false,
+                            dots: true
+                        }
+                    }
+                ]
             });
 
-            // Validação adicional
-            nameInput.addEventListener('input', function () {
-                const value = this.value;
-                this.value = value.replace(/[^A-Za-z\s]/g, ''); // Remove qualquer caractere que não seja letra ou espaço
+            $('#name').on('input', function() {
+                this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
             });
 
-            phoneInput.addEventListener('input', function () {
-                const value = this.value;
-                this.value = value.replace(/[^\d]/g, ''); // Remove qualquer caractere que não seja número
+            $('#phone').on('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            $('nav a').on('click', function(event) {
+                event.preventDefault();
+                const target = $(this).attr('href');
+                $('html, body').animate({
+                    scrollTop: $(target).offset().top
+                }, 500);
             });
         });
     </script>
 </body>
-
 </html>
