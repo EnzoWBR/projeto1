@@ -68,9 +68,9 @@ export default class ModulosController {
             'updatedAt',
           ])
     
-          modulito.merge(data)
+          respostita.merge(data)
     
-          const modulosModified = await modulito.save()
+          const modulosModified = await respostita.save()
     
           return response.safeStatus(201).json({
             message: `modulo ${modulosModified.id}, alterado com sucesso!`,
