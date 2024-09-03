@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import Arquivo from 'App/Models/...'
 
 export default class UploadController {
   public async store({ request, response }: HttpContext) {
