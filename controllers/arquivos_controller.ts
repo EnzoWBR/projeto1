@@ -1,6 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import Arquivo from 'App/Models/...'
-
+import Arquivo from '#models/arquivo'
 export default class UploadController {
   public async store({ request, response }: HttpContext) {
     const pdfFile = request.file('pdf_file', { extnames: ['pdf'], size: '5mb' })
@@ -25,9 +24,9 @@ export default class UploadController {
       await videoFile.move('tmp/uploads', { name: videoPath })
 
       const arquivo = new Arquivo()
-      arquivo.pdfFilePath = pdfPath
-      arquivo.audioFilePath = audioPath
-      arquivo.videoFilePath = videoPath
+      arquivo.pdf = pdfPath
+      arquivo.audio = audioPath
+      arquivo.video = videoPath
       await arquivo.save()
 
       return response.ok({ message: 'Arquivos enviados com sucesso!', arquivo })
