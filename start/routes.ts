@@ -15,6 +15,9 @@ import MatriculasController from '#controllers/matriculas_controller'
 import AulasController from '#controllers/aulas_controller'
 import ExercicioController from '#controllers/exercicios_controller'
 import RespostaController from '#controllers/respostas_controller'
+import UploadController from '#controllers/uploads_controller'
+
+
 
 import router from '@adonisjs/core/services/router'
 
@@ -68,6 +71,8 @@ router.get('respostas', [RespostaController, 'index'])
 router.post('respostas', [RespostaController, 'store'])
 router.get('respostas/:id', [RespostaController, 'show'])
 router.put('respostas', [RespostaController, 'update'])
+
+router.post('/upload', [UploadController, 'store'])
 
 
 
