@@ -19,10 +19,17 @@
 
         header {
             background: #6a0dad;
-            color: #fff;
-            padding: 1rem 0;
-            text-align: center;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-logo {
+            max-height: 150px; /* Tamanho legível da imagem */
+            width: auto;
         }
 
         nav {
@@ -45,7 +52,7 @@
         }
 
         nav a:hover {
-            background: #510080;
+            background: #bda103;
         }
 
         .container {
@@ -88,7 +95,7 @@
 
         .course-img,
         .additional-img {
-            width: 45%;
+            width: 35%;
             height: auto;
         }
 
@@ -115,20 +122,19 @@
             position: relative;
             bottom: 0;
             width: 100%;
+        }
 
-            .social-icons a {
-                color: #fff;
-                margin: 0 10px;
-                text-decoration: none;
-                font-size: 1.2rem;
-                transition: transform 0.3s ease, color 0.3s ease;
-            }
+        .social-icons a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
 
-            .social-icons a:hover {
-                transform: scale(1.2);
-                color: #ffd700;
-                /* Cor dourada quando o ícone é destacado */
-            }
+        .social-icons a:hover {
+            transform: scale(1.2);
+            color: #ffd700;
         }
 
         .slick-slide img {
@@ -137,16 +143,8 @@
             height: auto;
         }
 
-        .social-icons a {
-            color: #fff;
-            margin: 0 10px;
-            text-decoration: none;
-            font-size: 1.2rem;
-        }
-
         .form-container {
             background: #e0f7fa;
-            /* Fundo azul claro */
             border-radius: 8px;
             padding: 2rem;
             margin: 1rem auto;
@@ -155,7 +153,6 @@
             text-align: center;
             position: relative;
             border: 2px solid #ffd700;
-            /* Bordas douradas */
             overflow: hidden;
         }
 
@@ -212,8 +209,12 @@
 
         @media (max-width: 768px) {
             header {
-                padding: 0.5rem 0;
-                font-size: 1.5rem;
+                padding: 0.5rem 1rem;
+                font-size: 1.2rem;
+            }
+
+            .header-logo {
+                max-height: 60px; /* Reduz o tamanho do logo em telas menores */
             }
 
             .course {
@@ -223,7 +224,6 @@
 
             .course button {
                 margin-bottom: 20px;
-                /* Adiciona um espaço extra abaixo do botão */
             }
 
             .course-img,
@@ -267,13 +267,10 @@
         @media (min-width: 769px) {
             .form-container {
                 max-width: 100%;
-                /* Faz o formulário ocupar a tela toda */
                 margin: 0;
-                /* Remove margens laterais */
             }
         }
 
-        /* Flex direction alternado para a posição das imagens e textos */
         .course:nth-child(even) {
             flex-direction: row-reverse;
         }
@@ -304,7 +301,8 @@
 
 <body>
     <header>
-        <h1>Academia Washington</h1>
+        <img src="logo2.png" alt="Logo" class="header-logo"> <!-- Adicione a imagem do logo aqui -->
+        
     </header>
     <nav>
         <a href="#carousel">Carousel</a>
@@ -328,7 +326,7 @@
                     e o entusiasmo das crianças pela aprendizagem.</p>
                 <button onclick="scrollToForm()">Saiba Mais</button>
             </div>
-            <img src="students16.png" alt="Washington Kids" class="course-img">
+            <img src="wash.jpg" alt="Washington Kids" class="course-img">
         </div>
         <div id="juniors" class="course">
             <div class="course-content">
@@ -338,7 +336,7 @@
                     comunicação, preparando os alunos para desafios mais complexos.</p>
                 <button onclick="scrollToForm()">Saiba Mais</button>
             </div>
-            <img src="escola1.jpg" alt="Imagem Adicional" class="additional-img">
+            <img src="wash2.jpeg" alt="Imagem Adicional" class="additional-img">
         </div>
         <div id="prime" class="course">
             <div class="course-content">
@@ -348,7 +346,7 @@
                     desenvolvimento integral do aluno.</p>
                 <button onclick="scrollToForm()">Saiba Mais</button>
             </div>
-            <img src="students13.png" alt="Washington Prime" class="course-img">
+            <img src="washington.png" alt="Washington Prime" class="course-img">
         </div>
         <div id="advanced" class="course">
             <div class="course-content">
@@ -358,7 +356,7 @@
                     profissionais.</p>
                 <button onclick="scrollToForm()">Saiba Mais</button>
             </div>
-            <img src="escola.jpg" alt="Imagem Adicional" class="additional-img">
+            <img src="books.jpg" alt="Imagem Adicional" class="additional-img">
         </div>
         <div id="formulario" class="form-container">
             <img src="Selo-ABF-1.jpg" alt="Imagem do Formulário" class="form-image"> <!-- Adicionando a imagem -->
