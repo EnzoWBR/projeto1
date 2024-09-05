@@ -1,0 +1,378 @@
+<template>
+  <div id="app">
+    <header>
+      <img :src="require('@/assets/logo2.png')" alt="Logo" class="header-logo">
+    </header>
+    <nav>
+      <a href="#carousel">Carousel</a>
+      <a href="#kids">Washington Kids</a>
+      <a href="#juniors">Washington Juniors</a>
+      <a href="#prime">Washington Prime</a>
+      <a href="#advanced">Washington Advanced</a>
+      <a href="#formulario">Formulário</a>
+    </nav>
+    <div class="container">
+      <div id="carousel" class="carousel">
+        <div><img :src="require('@/assets/students10.png')" alt="Slide 1"></div>
+        <div><img :src="require('@/assets/students11.png')" alt="Slide 2"></div>
+        <div><img :src="require('@/assets/students12.png')" alt="Slide 3"></div>
+      </div>
+      <div v-for="(course, index) in courses" :key="course.id" :id="course.id" class="course" :class="{ 'reverse': index % 2 === 1 }">
+        <img :src="require(`@/assets/${course.image}`)" :alt="course.title">
+        <div class="course-content">
+          <h2>{{ course.title }}</h2>
+          <p>{{ course.description }}</p>
+          <button @click="scrollToForm">Saiba Mais</button>
+        </div>
+      </div>
+      <div id="formulario" class="form-container">
+        <img :src="require('@/assets/Selo-ABF-1.jpg')" alt="Imagem do Formulário">
+        <h2>FORMULÁRIO</h2>
+        <form
+          id="contactForm"
+          action="https://webhooks.workflows.wsmart.tec.br/webhook/eef8e3e1-4808-407b-b983-658dfa8ab786"
+          method="POST"
+        >
+          <input type="text" id="name" name="name" placeholder="Digite seu nome aqui" required />
+          <input type="text" id="phone" name="phone" placeholder="xx xxxxx-xxxx" required />
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+    </div>
+    <footer id="footer">
+      <div class="social-icons">
+        <a href="https://www.instagram.com" target="_blank" class="fab fa-instagram" aria-label="Instagram"></a>
+        <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" class="fas fa-envelope" aria-label="Email"></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+      <p>&copy; 2024 Academia Washington. Todos os direitos reservados.</p>
+    </footer>
+  </div>
+</template>
+
+<script>
+import $ from "jquery";
+
+export default {
+  name: "App",
+  data() {
+    return {
+      courses: [
+        {
+          id: 'kids',
+          title: 'Washington Kids',
+          description: 'Aprendizado lúdico e divertido para que as crianças aprendam a se expressar em diferentes contextos. Nossos métodos envolvem atividades criativas e interativas, projetadas para estimular a curiosidade e o entusiasmo das crianças pela aprendizagem.',
+          image: 'wash.jpg'
+        },
+        {
+          id: 'juniors',
+          title: 'Washington Juniors',
+          description: 'Especial para pré-adolescentes e preparatório para o nível Washington Prime. O curso oferece um ambiente de aprendizado dinâmico e estruturado para desenvolver habilidades avançadas em linguagem e comunicação, preparando os alunos para desafios mais complexos.',
+          image: 'wash2.jpeg'
+        },
+        {
+          id: 'prime',
+          title: 'Washington Prime',
+          description: 'Focado na fluência em todas as habilidades: fala, leitura, escrita e audição. Este curso é ideal para quem deseja alcançar um nível avançado de proficiência, com uma abordagem equilibrada que promove o desenvolvimento integral do aluno.',
+          image: 'washington.png'
+        },
+        {
+          id: 'advanced',
+          title: 'Washington Advanced',
+          description: 'Curso para aprimorar o nível avançado da língua inglesa. Ideal para aqueles que buscam um desafio maior e desejam alcançar um domínio completo do idioma, tanto em contextos acadêmicos quanto profissionais.',
+          image: 'books.jpg'
+        }
+      ]
+    };
+  },
+  mounted() {
+    // Carousel initialization
+    $(".carousel").slick({
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2000,
+    });
+
+    // Input validation
+    $("#name").on("input", function () {
+      this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+    });
+
+    $("#phone").on("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+
+    // Smooth scroll for navigation
+    $("nav a").on("click", function (event) {
+      event.preventDefault();
+      const target = $(this).attr("href");
+      $("html, body").animate(
+        {
+          scrollTop: $(target).offset().top,
+        },
+        500
+      );
+    });
+  },
+  methods: {
+    scrollToForm() {
+      $("html, body").animate(
+        {
+          scrollTop: $("#formulario").offset().top,
+        },
+        500
+      );
+    },
+  },
+};
+</script>
+
+<style>
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+header {
+  background: #6a0dad;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-logo {
+  max-height: 100px;
+  width: auto;
+}
+
+nav {
+  background: #8e26d4;
+  padding: 10px 0;
+  box-shadow: 0 2px 4px rgba(150, 133, 133, 0.1);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-weight: 700;
+  text-align: center;
+}
+
+nav a:hover {
+  background: #bda103;
+}
+
+.container {
+  max-width: 1365px;
+  margin: 1rem auto;
+}
+
+.course {
+  background: #fff;
+  margin-bottom: 3.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.course.reverse {
+  flex-direction: row-reverse;
+}
+
+.course img {
+  max-width: 35%;
+  height: auto;
+  border-radius: 8px;
+  flex: 1;
+}
+
+.course-content {
+  flex: 2;
+  padding: 4rem;
+}
+
+.course h2 {
+  margin-top: 0;
+  color: #6903b3;
+}
+
+.course p {
+  line-height: 1.8;
+}
+
+.course button {
+  background: #8c14e2;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.course button:hover {
+  background: #004080;
+}
+
+footer {
+  background: #003366;
+  color: #fff;
+  text-align: center;
+  padding: 2rem 0;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.social-icons a {
+  color: #fff;
+  margin: 0 10px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.social-icons a:hover {
+  transform: scale(1.2);
+  color: #ffd700;
+}
+
+.slick-slide img {
+  width: 100%;
+  height: auto;
+}
+
+.form-container {
+  background: #e0f7fa;
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 1rem auto;
+  max-width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border: 2px solid #ffd700;
+  overflow: hidden;
+}
+
+.form-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.form-container h2 {
+  color: #6903b3;
+  margin-bottom: 1rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  background: #6a0dad;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+form input,
+form button {
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+form input {
+  font-size: 1rem;
+}
+
+form button {
+  background: #8c14e2;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+form button:hover {
+  background: #003366;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .course {
+    flex-direction: column;
+    text-align: center;
+  }
+  .course.reverse {
+    flex-direction: column-reverse; /* Inverte a ordem das imagens e do conteúdo para dispositivos móveis */
+  }
+
+  .course img {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+.course-content {
+    padding: 1rem;
+  }
+  .form-container {
+    padding: 1rem;
+  }
+  .course-content {
+    padding: 4rem;
+  }
+
+  .form-container {
+    padding: 1rem;
+  }
+
+ form {
+    padding: 1rem;
+  }
+}
+@media (max-width: 480px) {
+  .header-logo {
+    max-height: 80px;
+  }
+
+  nav a {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .social-icons a {
+    font-size: 1rem;
+    margin: 0 5px;
+  }
+
+  form input,
+  form button {
+    font-size: 0.9rem;
+  }
+}
+</style>
