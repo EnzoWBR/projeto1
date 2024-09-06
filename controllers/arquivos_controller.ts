@@ -1,10 +1,12 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Arquivo from '#models/arquivo'
+
+
 export default class UploadController {
   public async store({ request, response }: HttpContext) {
-    const pdfFile = request.file('pdf_file', { extnames: ['pdf'], size: '5mb' })
-    const audioFile = request.file('audio_file', { extnames: ['mp3', 'wav'], size: '10mb' })
-    const videoFile = request.file('video_file', { extnames: ['mp4', 'avi'], size: '50mb' })
+    const pdfFile = request.file('pdf', { extnames: ['pdf'], size: '5mb' })
+    const audioFile = request.file('audio', { extnames: ['mp3', 'wav'], size: '10mb' })
+    const videoFile = request.file('video', { extnames: ['mp4', 'avi'], size: '50mb' })
 
     if (!pdfFile || !audioFile || !videoFile) {
       return response.badRequest('Todos os arquivos são obrigatórios')
