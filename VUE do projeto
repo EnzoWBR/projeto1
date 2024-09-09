@@ -51,10 +51,21 @@
     </div>
     <footer id="footer">
       <div class="social-icons">
-        <a href="https://www.instagram.com" target="_blank" class="fab fa-instagram" aria-label="Instagram"></a>
-        <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" class="fas fa-envelope" aria-label="Email"></a>
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" aria-label="Email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://wa.me/" target="_blank" aria-label="WhatsApp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
       </div>
       <p>&copy; 2024 Academia Washington. Todos os direitos reservados.</p>
     </footer>
@@ -267,11 +278,15 @@ footer {
   width: 100%;
 }
 
+.social-icons {
+  margin-bottom: 1rem;
+}
+
 .social-icons a {
   color: #fff;
   margin: 0 10px;
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 1.5rem; /* Aumenta o tamanho dos ícones */
   transition: transform 0.3s ease, color 0.3s ease; /* Garante animação suave no hover */
 }
 
