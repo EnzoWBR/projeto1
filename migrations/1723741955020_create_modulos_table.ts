@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.integer('id_cursos').references('id').inTable('cursos')
 
       table.string('nome').notNullable()
-      table.text('descrição').notNullable()
+      table.text('descricao').notNullable()
 
       table.timestamp('created_at')
       table.timestamp('updated_at')
