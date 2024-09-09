@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <header>
-      <img :src="require('@/assets/logo2.png')" alt="Logo" class="header-logo">
+      <div class="header-logo-container">
+        <img :src="require('@/assets/logo2.png')" alt="Logo" class="header-logo">
+      </div>
     </header>
     <nav>
       <a href="#carousel">Carousel</a>
@@ -26,15 +28,23 @@
         </div>
       </div>
       <div id="formulario" class="form-container">
-        <img :src="require('@/assets/Selo-ABF-1.jpg')" alt="Imagem do Formulário">
-        <h2>FORMULÁRIO</h2>
+        <div class="form-header">
+          <img :src="require('@/assets/Selo-ABF-1.jpg')" alt="Imagem do Formulário" class="form-image">
+          <h2 class="form-title">FORMULÁRIO</h2>
+        </div>
         <form
           id="contactForm"
           action="https://webhooks.workflows.wsmart.tec.br/webhook/eef8e3e1-4808-407b-b983-658dfa8ab786"
           method="POST"
         >
-          <input type="text" id="name" name="name" placeholder="Digite seu nome aqui" required />
-          <input type="text" id="phone" name="phone" placeholder="(xx) xxxxx-xxxx" required />
+          <div class="form-group">
+            <label for="name">NOME:</label>
+            <input type="text" id="name" name="name" placeholder="Digite seu nome aqui" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">TELEFONE:</label>
+            <input type="text" id="phone" name="phone" placeholder="(xx) xxxxx-xxxx" required />
+          </div>
           <button type="submit">Enviar</button>
         </form>
       </div>
@@ -145,9 +155,15 @@ header {
   background: #6a0dad;
   padding: 1rem;
   display: flex;
-  align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid #fff; /* Linha branca abaixo do header */
+}
+
+.header-logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header-logo {
@@ -171,7 +187,11 @@ nav a {
   text-decoration: none;
   font-weight: 700;
   text-align: center;
-  transition: background 0.3s ease; /* Adiciona transição ao fundo dos links */
+  border-left: 1px solid #fff; /* Linha branca entre os itens do nav */
+}
+
+nav a:first-child {
+  border-left: none; /* Remove a borda do primeiro item */
 }
 
 nav a:hover {
@@ -275,15 +295,36 @@ footer {
   max-width: 100%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
-  border: 2px solid #ffd700; /* Borda roxa */
-  overflow: hidden;
+  border: 2px solid #8e26d4; /* Borda em tom roxo */
+  background:linear-gradient(0deg, rgba(152, 0, 255, 0.1), rgba(131, 0, 219, 0.87))
 }
 
-.form-container img {
-  max-width: 50%;
+.form-header {
+  margin-bottom: 1rem;
+}
+
+.form-image {
+  max-width: 70%;
   height: auto;
   margin-bottom: 1rem;
   border-radius: 8px;
+}
+
+.form-title {
+  color: #fff;
+  margin: 0;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #fff;
 }
 
 form input,
@@ -293,7 +334,7 @@ form button {
   border-radius: 4px;
   border: 1px solid #8e26d4; /* Bordas em tom roxo */
   font-size: 1.1rem;
-  width: 70%;
+  width: 100%;
   max-width: 400px;
   transition: border-color 0.3s ease; /* Adiciona transição ao foco dos campos */
 }
@@ -309,6 +350,9 @@ form button {
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-top: 1rem; /* Adiciona uma margem superior ao botão */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 form button:hover {
@@ -327,7 +371,7 @@ form button:hover {
   }
 
   .course img {
-    max-width: 50%;
+    max-width: 60%;
     margin: 1rem auto;
   }
 
@@ -366,5 +410,4 @@ form button:hover {
     font-size: 0.9rem;
   }
 }
-
 </style>
