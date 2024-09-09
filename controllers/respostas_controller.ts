@@ -63,7 +63,7 @@ export default class ModulosController {
     
           const { ...data } = request.only([
             'respostaAluno',
-            'descricao',
+            'resultadoComparacao',
             'createdAt',
             'updatedAt',
           ])
