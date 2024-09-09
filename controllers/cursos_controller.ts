@@ -66,7 +66,7 @@ export default class CursosController {
           const { ...data } = request.only([
             'nome',
             'descricao',
-            'cargahoraria',
+            'cargaHoraria',
             'createdAt',
             'updatedAt',
           ])
