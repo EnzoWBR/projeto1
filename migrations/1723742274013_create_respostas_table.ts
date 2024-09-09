@@ -9,8 +9,8 @@ export default class extends BaseSchema {
       table.integer('id_alunos').references('id').inTable('alunos')
       table.integer('id_exercicios').references('id').inTable('exercicios')
 
-      table.text('resposta_aluno').notNullable()
-      table.boolean('resultado_comparacao').notNullable()
+      table.text('respostaAluno').notNullable()
+      table.boolean('resultadoComparacao').notNullable()
 
       table.timestamp('created_at')
       table.timestamp('updated_at')
