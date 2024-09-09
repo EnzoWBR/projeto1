@@ -10,7 +10,7 @@ export default class extends BaseSchema {
 
       table.string('nome').notNullable()
       table.text('descricao').notNullable()
-      table.integer('carga horária').notNullable()
+      table.integer('cargaHorária').notNullable()
 
       table.timestamp('created_at')
       table.timestamp('updated_at')
