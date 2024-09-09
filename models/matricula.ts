@@ -7,7 +7,7 @@ export default class Matricula extends BaseModel {
   declare id: number
 
   @column()
-  declare data: DateTime
+  declare data_matricula: DateTime
 
   @column()
   declare RA: number
