@@ -1,428 +1,316 @@
 <template>
-  <div id="app">
-    <header>
-      <div class="header-logo-container">
-        <img :src="require('@/assets/logo2.png')" alt="Logo" class="header-logo">
-      </div>
-    </header>
-    <nav>
-      <a href="#carousel">Carousel</a>
-      <a href="#kids">Washington Kids</a>
-      <a href="#juniors">Washington Juniors</a>
-      <a href="#prime">Washington Prime</a>
-      <a href="#advanced">Washington Advanced</a>
-      <a href="#formulario">Formulário</a>
-    </nav>
-    <div class="container">
-      <div id="carousel" class="carousel">
-        <div><img :src="require('@/assets/students10.png')" alt="Slide 1"></div>
-        <div><img :src="require('@/assets/students11.png')" alt="Slide 2"></div>
-        <div><img :src="require('@/assets/students12.png')" alt="Slide 3"></div>
-      </div>
-      <div v-for="(course, index) in courses" :key="course.id" :id="course.id" class="course" :class="{ 'reverse': index % 2 === 1 }">
-        <img :src="require(`@/assets/${course.image}`)" :alt="course.title">
-        <div class="course-content">
-          <h2>{{ course.title }}</h2>
-          <p>{{ course.description }}</p>
-          <button @click="scrollToForm">Saiba Mais</button>
+  <div class="app-container">
+    <!-- Menu Lateral -->
+    <aside class="sidebar" :class="{ 'menu-visible': menuVisible }" @mouseover="showMenu" @mouseleave="hideMenu">
+      <ul>
+        <li class="active">Escolas</li>
+        <li>Alunos</li>
+        <li>Organização</li>
+      </ul>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+      <h1>Gerenciador de Escolas</h1>
+
+      <!-- Formulário para adicionar ou editar escola -->
+      <form @submit.prevent="saveEscola" class="form">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input id="nome" type="text" v-model="escola.nome" placeholder="Digite aqui o seu nome" required />
         </div>
-      </div>
-      <div id="formulario" class="form-container">
-        <div class="form-header">
-          <img :src="require('@/assets/Selo-ABF-1.jpg')" alt="Imagem do Formulário" class="form-image">
-          <h2 class="form-title">FORMULÁRIO</h2>
+        <div class="form-group">
+          <label for="endereco">Endereço</label>
+          <input id="endereco" type="text" v-model="escola.endereco" placeholder="Digite aqui o endereço" required />
         </div>
-        <form
-          id="contactForm"
-          action="https://webhooks.workflows.wsmart.tec.br/webhook/eef8e3e1-4808-407b-b983-658dfa8ab786"
-          method="POST"
-        >
-          <div class="form-group">
-            <label for="name">NOME:</label>
-            <input type="text" id="name" name="name" placeholder="Digite seu nome aqui" required />
-          </div>
-          <div class="form-group">
-            <label for="phone">TELEFONE:</label>
-            <input type="text" id="phone" name="phone" placeholder="(xx) xxxxx-xxxx" required />
-          </div>
-          <button type="submit">Enviar</button>
-        </form>
-      </div>
-    </div>
-    <footer id="footer">
-      <div class="social-icons">
-        <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" aria-label="Email">
-          <i class="fas fa-envelope"></i>
-        </a>
-        <a href="https://wa.me/" target="_blank" aria-label="WhatsApp">
-          <i class="fab fa-whatsapp"></i>
-        </a>
-        <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">
-          <i class="fab fa-facebook"></i>
-        </a>
-        <a href="https://twitter.com" target="_blank" aria-label="Twitter">
-          <i class="fab fa-twitter"></i>
-        </a>
-      </div>
-      <p>&copy; 2024 Academia Washington. Todos os direitos reservados.</p>
-    </footer>
+        <div class="form-group">
+          <label for="cep">CEP</label>
+          <input id="cep" type="text" v-model="escola.cep" placeholder="Digite aqui o CEP" required />
+        </div>
+        <div class="form-group">
+          <label for="telefone">Telefone</label>
+          <input id="telefone" type="text" v-model="escola.telefone" placeholder="Digite aqui o Telefone" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" v-model="escola.email" placeholder="Digite aqui o email" required />
+        </div>
+        <button type="submit" class="btn btn-primary">{{ editando ? 'Atualizar' : 'Adicionar' }} Escola</button>
+      </form>
+
+      <!-- Listagem das escolas -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Endereço</th>
+            <th>CEP</th>
+            <th>Telefone</th>
+            <th>Email</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(escola, index) in escolas" :key="escola.id">
+            <td class="highlight">{{ escola.nome }}</td>
+            <td class="highlight">{{ escola.endereco }}</td>
+            <td class="highlight">{{ escola.cep }}</td>
+            <td>{{ escola.telefone }}</td>
+            <td>{{ escola.email }}</td>
+            <td>
+              <button class="btn btn-edit" @click="editarEscola(index)">Editar</button>
+              <button class="btn btn-delete" @click="removerEscola(index)">Excluir</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
   </div>
 </template>
 
 <script>
-import $ from "jquery";
+import axios from 'axios';
 
 export default {
-  name: "App",
   data() {
     return {
-      courses: [
-        {
-          id: 'kids',
-          title: 'Washington Kids',
-          description: 'Aprendizado lúdico e divertido para que as crianças aprendam a se expressar em diferentes contextos. Nossos métodos envolvem atividades criativas e interativas, projetadas para estimular a curiosidade e o entusiasmo das crianças pela aprendizagem.',
-          image: 'wash.jpg'
-        },
-        {
-          id: 'juniors',
-          title: 'Washington Juniors',
-          description: 'Especial para pré-adolescentes e preparatório para o nível Washington Prime. O curso oferece um ambiente de aprendizado dinâmico e estruturado para desenvolver habilidades avançadas em linguagem e comunicação, preparando os alunos para desafios mais complexos.',
-          image: 'wash2.jpeg'
-        },
-        {
-          id: 'prime',
-          title: 'Washington Prime',
-          description: 'Focado na fluência em todas as habilidades: fala, leitura, escrita e audição. Este curso é ideal para quem deseja alcançar um nível avançado de proficiência, com uma abordagem equilibrada que promove o desenvolvimento integral do aluno.',
-          image: 'washington.png'
-        },
-        {
-          id: 'advanced',
-          title: 'Washington Advanced',
-          description: 'Curso para aprimorar o nível avançado da língua inglesa. Ideal para aqueles que buscam um desafio maior e desejam alcançar um domínio completo do idioma, tanto em contextos acadêmicos quanto profissionais.',
-          image: 'books.jpg'
-        }
-      ]
+      escolas: [], // Lista de escolas
+      escola: { nome: '', endereco: '', cep: '', telefone: '', email: '' }, // Escola atual para adicionar ou editar
+      editando: false,
+      indiceEdicao: null,
+      menuVisible: false
     };
   },
-  mounted() {
-    // Carousel initialization
-    $(".carousel").slick({
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      autoplay: true,
-      autoplaySpeed: 2000,
-    });
-
-    // Input validation
-    $("#name").on("input", function () {
-      this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
-    });
-
-    $("#phone").on("input", function () {
-      this.value = this.value.replace(/[^0-9]/g, "");
-    });
-
-    // Smooth scroll for navigation
-    $("nav a").on("click", function (event) {
-      event.preventDefault();
-      const target = $(this).attr("href");
-      $("html, body").animate(
-        {
-          scrollTop: $(target).offset().top,
-        },
-        500
-      );
-    });
-  },
   methods: {
-    scrollToForm() {
-      $("html, body").animate(
-        {
-          scrollTop: $("#formulario").offset().top,
-        },
-        500
-      );
+    async fetchEscolas() {
+      try {
+        const response = await axios.get('http://localhost:3333/escolas');
+        this.escolas = response.data.escolas || [];
+      } catch (error) {
+        console.error('Erro ao buscar escolas:', error);
+      }
     },
+    async saveEscola() {
+      try {
+        if (this.editando) {
+          // Atualiza a escola existente
+          await axios.put(`http://localhost:3333/escolas/${this.escola.id}`, this.escola);
+          this.editando = false;
+        } else {
+          // Adiciona nova escola
+          await axios.post('http://localhost:3333/escolas', this.escola);
+        }
+        // Recarrega a lista de escolas
+        await this.fetchEscolas();
+        // Limpa o formulário
+        this.escola = { nome: '', endereco: '', cep: '', telefone: '', email: '' };
+      } catch (error) {
+        console.error('Erro ao salvar a escola:', error);
+      }
+    },
+    editarEscola(index) {
+      this.escola = { ...this.escolas[index] };
+      this.editando = true;
+      this.indiceEdicao = index;
+    },
+    async removerEscola(index) {
+      try {
+        await axios.delete(`http://localhost:3333/escolas/${this.escolas[index].id}`);
+        this.escolas.splice(index, 1);
+      } catch (error) {
+        console.error('Erro ao remover a escola:', error);
+      }
+    },
+    showMenu() {
+      this.menuVisible = true;
+    },
+    hideMenu() {
+      this.menuVisible = false;
+    }
   },
+  async created() {
+    await this.fetchEscolas();
+  }
 };
 </script>
 
-<style>
-/* Estilos gerais */
-body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  background-color: #f4f4f4;
-  color: #333;
-}
-
-header {
-  background: #6a0dad;
-  padding: 1rem;
+<style scoped>
+/* Layout Principal */
+.app-container {
   display: flex;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-bottom: 2px solid #fff; /* Linha branca abaixo do header */
+  font-family: 'Arial', sans-serif;
 }
 
-.header-logo-container {
+/* Menu Lateral */
+.sidebar {
+  width: 175px;
+  background-color: #007bff;
+  padding: 20px;
+  color: white;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translateX(-200px); /* Inicialmente escondido */
+  transition: transform 0.3s ease;
+}
+
+.sidebar.menu-visible {
+  transform: translateX(0); /* Mostra o menu quando o mouse está sobre ele */
+}
+
+/* Estilos do Menu Lateral */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 10px 0;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.sidebar li.active,
+.sidebar li:hover {
+  background-color: #0056b3;
+}
+
+/* Conteúdo Principal */
+.main-content {
+  margin-left: 200px; /* Espaço para o menu lateral */
+  padding: 20px;
+  background-color: #f9f9f9;
+  flex-grow: 1;
+}
+
+/* Título */
+h1 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Formulário */
+.form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-.header-logo {
-  max-height: 100px;
-  width: auto;
-}
-
-nav {
-  background: #8e26d4;
-  padding: 10px 0;
-  box-shadow: 0 2px 4px rgba(150, 133, 133, 0.1);
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  transition: background 0.3s ease; /* Adiciona transição ao fundo do nav */
-}
-
-nav a {
-  color: #fff;
-  padding: 10px 20px;
-  text-decoration: none;
-  font-weight: 700;
-  text-align: center;
-  border-left: 1px solid #fff; /* Linha branca entre os itens do nav */
-}
-
-nav a:first-child {
-  border-left: none; /* Remove a borda do primeiro item */
-}
-
-nav a:hover {
-  background: #bda103;
-}
-
-.container {
-  max-width: 1365px;
-  margin: 1rem auto;
-}
-
-.course {
-  background: #fff;
-  margin-bottom: 3.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  position: relative;
-  flex-wrap: wrap;
-  transition: transform 0.3s ease; /* Adiciona transição ao curso */
-}
-
-.course.reverse {
-  flex-direction: row-reverse;
-}
-
-.course img {
-  max-width: 35%;
-  height: auto;
-  border-radius: 8px;
-  flex: 1;
-}
-
-.course-content {
-  flex: 2;
-  padding: 4rem;
-}
-
-.course h2 {
-  margin-top: 0;
-  color: #6903b3;
-}
-
-.course p {
-  line-height: 1.8;
-}
-
-.course button {
-  background: #8c14e2;
-  color: #fff;
-  border: none;
-  padding: 0.75rem 1.5rem; /* Aumenta o padding do botão */
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-top: 1rem; /* Adiciona uma margem superior para o botão */
-  transition: background 0.3s ease; /* Adiciona transição ao fundo do botão */
-}
-
-.course button:hover {
-  background: #004080;
-}
-
-footer {
-  background: #003366;
-  color: #fff;
-  text-align: center;
-  padding: 2rem 0;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-}
-
-.social-icons {
-  margin-bottom: 1rem;
-}
-
-.social-icons a {
-  color: #fff;
-  margin: 0 10px;
-  text-decoration: none;
-  font-size: 1.5rem; /* Aumenta o tamanho dos ícones */
-  transition: transform 0.3s ease, color 0.3s ease; /* Garante animação suave no hover */
-}
-
-.social-icons a:hover {
-  transform: scale(1.2);
-  color: #ffd700;
-}
-
-/* Carousel */
-.slick-slide img {
-  width: 100%;
-  height: 300px; /* Ajusta a altura das imagens do carousel */
-  object-fit: cover; /* Mantém a proporção da imagem enquanto a corta para a altura especificada */
-}
-
-.form-container {
-  background: #8e26d4; /* Fundo em tom roxo */
-  border-radius: 8px;
-  padding: 2rem;
-  margin: 1rem auto;
-  max-width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  border: 2px solid #8e26d4; /* Borda em tom roxo */
-  background:linear-gradient(0deg, rgba(152, 0, 255, 0.1), rgba(131, 0, 219, 0.87))
-}
-
-.form-header {
-  margin-bottom: 1rem;
-}
-
-.form-image {
-  max-width: 70%;
-  height: auto;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-}
-
-.form-title {
-  color: #fff;
-  margin: 0;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  color: #fff;
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-form input,
-form button {
-  padding: 0.75rem; /* Aumenta o padding dos campos */
-  margin: 0.75rem 0; /* Aumenta o espaçamento entre os campos */
+input {
+  padding: 10px;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  border: 1px solid #8e26d4; /* Bordas em tom roxo */
-  font-size: 1.1rem;
-  width: 100%;
-  max-width: 400px;
-  transition: border-color 0.3s ease; /* Adiciona transição ao foco dos campos */
+  font-size: 14px;
+  transition: border-color 0.3s;
 }
 
-form input:focus,
-form button:focus {
-  border-color: #ffd700;
+input:focus {
+  border-color: #007bff;
 }
 
-form button {
-  background: #8c14e2; /* Botão em tom roxo */
-  color: #fff;
+/* Botões */
+.btn {
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 1rem; /* Adiciona uma margem superior ao botão */
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  margin-top: 10px;
 }
 
-form button:hover {
-  background: #004080;
+.btn-primary {
+  background-color: #007bff;
 }
 
-@media (max-width: 768px) {
-  .course {
-    flex-direction: column;
-    text-align: center;
-    transition: transform 0.3s ease; /* Adiciona transição ao curso em dispositivos móveis */
-  }
+.btn-primary:hover {
+  background-color: #0056b3;
+}
 
-  .course.reverse {
-    flex-direction: column;
-  }
+.btn-edit {
+  background-color: #28a745;
+  margin-right: 5px;
+}
 
-  .course img {
-    max-width: 60%;
-    margin: 1rem auto;
-  }
+.btn-edit:hover {
+  background-color: #218838;
+}
 
-  .course-content {
-    padding: 1rem;
-  }
+.btn-delete {
+  background-color: #dc3545;
+}
 
-  nav {
-    flex-direction: column;
-    align-items: center;
-  }
+.btn-delete:hover {
+  background-color: #c82333;
+}
 
-  nav a {
-    padding: 15px;
-    font-size: 1rem;
-    border-bottom: 1px solid #bda103;
+/* Tabela */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.highlight {
+  background-color: #e9f7fe;
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .sidebar {
     width: 100%;
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  nav a {
-    padding: 12px;
-    font-size: 0.9rem;
-    border-bottom: 1px solid #bda103;
+    height: auto;
+    transform: translateX(0); /* Mostra o menu lateral em dispositivos pequenos */
   }
 
-  .social-icons a {
-    font-size: 1rem;
-    margin: 0 5px;
+  .main-content {
+    margin-left: 0; /* Ajusta o conteúdo principal */
   }
 
-  form input,
-  form button {
-    font-size: 0.9rem;
+  /* Mostra o menu apenas ao interagir com ele no mobile */
+  .sidebar {
+    display: block;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.menu-visible {
+    transform: translateX(0);
+  }
+
+  .app-container:hover .sidebar {
+    transform: translateX(0);
   }
 }
 </style>
