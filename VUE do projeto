@@ -2,6 +2,9 @@
   <div class="app-container">
     <!-- Menu Lateral -->
     <aside class="sidebar" :class="{ 'menu-visible': menuVisible }" @mouseover="showMenu" @mouseleave="hideMenu">
+      <div class="sidebar-header">
+        <img src="@/assets/logo2.png" alt="Logo" class="sidebar-logo" />
+      </div>
       <ul>
         <li class="active">Escolas</li>
         <li>Alunos</li>
@@ -11,7 +14,11 @@
 
     <!-- Conteúdo Principal -->
     <main class="main-content">
-      <h1>Gerenciador de Escolas</h1>
+      <!-- Header com Imagem -->
+      <header class="header">
+        <img src="@/assets/washington.png" alt="Logo" class="logo" />
+        <h1>Gerenciador de Escolas</h1>
+      </header>
 
       <!-- Formulário para adicionar ou editar escola -->
       <form @submit.prevent="saveEscola" class="form">
@@ -52,9 +59,9 @@
         </thead>
         <tbody>
           <tr v-for="(escola, index) in escolas" :key="escola.id">
-            <td class="highlight">{{ escola.nome }}</td>
-            <td class="highlight">{{ escola.endereco }}</td>
-            <td class="highlight">{{ escola.cep }}</td>
+            <td class="info">{{ escola.nome }}</td>
+            <td class="info">{{ escola.endereco }}</td>
+            <td class="info">{{ escola.cep }}</td>
             <td>{{ escola.telefone }}</td>
             <td>{{ escola.email }}</td>
             <td>
@@ -138,13 +145,15 @@ export default {
 /* Layout Principal */
 .app-container {
   display: flex;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Poppins', sans-serif; /* Fonte Poppins */
+  transition: transform 0.3s ease; /* Transição suave para o deslocamento */
+  background-color: #f0f4f8; /* Cor de fundo leve */
 }
 
 /* Menu Lateral */
 .sidebar {
-  width: 175px;
-  background-color: #007bff;
+  width: 200px;
+  background-color: #1a1a1d; /* Cor de fundo mais escura */
   padding: 20px;
   color: white;
   height: 100vh;
@@ -153,10 +162,19 @@ export default {
   top: 0;
   transform: translateX(-200px); /* Inicialmente escondido */
   transition: transform 0.3s ease;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
 }
 
-.sidebar.menu-visible {
-  transform: translateX(0); /* Mostra o menu quando o mouse está sobre ele */
+/* Header do Menu Lateral */
+.sidebar-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.sidebar-logo {
+  max-width: 150px;
+  height: auto;
 }
 
 /* Estilos do Menu Lateral */
@@ -171,27 +189,46 @@ export default {
   cursor: pointer;
   font-weight: bold;
   border-radius: 4px;
+  background-color: #444; /* Fundo cinza escuro */
+  color: #f0f0f0; /* Cor do texto */
+  transition: background-color 0.3s;
 }
 
 .sidebar li.active,
 .sidebar li:hover {
-  background-color: #0056b3;
+  background-color: #007bff; /* Azul vibrante */
 }
 
 /* Conteúdo Principal */
 .main-content {
-  margin-left: 200px; /* Espaço para o menu lateral */
+  margin-left: 220px; /* Ajustado para deixar espaço para o menu lateral */
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #f0f4f8; /* Cor de fundo leve */
   flex-grow: 1;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #ffffff; /* Fundo branco */
+  color: #333;
+  border-bottom: 2px solid #007bff; /* Linha inferior azul */
+}
+
+.logo {
+  max-width: 150px;
+  height: auto;
+  margin-right: 20px;
 }
 
 /* Título */
 h1 {
   font-size: 24px;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Formulário */
@@ -200,6 +237,10 @@ h1 {
   flex-direction: column;
   gap: 15px;
   margin-bottom: 20px;
+  background-color: #fff; /* Fundo branco */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 .form-group {
@@ -210,6 +251,7 @@ h1 {
 label {
   font-weight: bold;
   margin-bottom: 5px;
+  color: #333;
 }
 
 input {
@@ -221,7 +263,7 @@ input {
 }
 
 input:focus {
-  border-color: #007bff;
+  border-color: #007bff; /* Azul */
 }
 
 /* Botões */
@@ -237,28 +279,19 @@ input:focus {
 }
 
 .btn-primary {
-  background-color: #007bff;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
+  background-color: #28a745; /* Verde para adicionar e atualizar */
 }
 
 .btn-edit {
-  background-color: #28a745;
-  margin-right: 5px;
-}
-
-.btn-edit:hover {
-  background-color: #218838;
+  background-color: #007bff; /* Azul para editar */
 }
 
 .btn-delete {
-  background-color: #dc3545;
+  background-color: #dc3545; /* Vermelho para excluir */
 }
 
-.btn-delete:hover {
-  background-color: #c82333;
+.btn:hover {
+  opacity: 0.8;
 }
 
 /* Tabela */
@@ -266,51 +299,28 @@ input:focus {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-th, td {
+.table th, .table td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: left;
 }
 
-th {
-  background-color: #f8f9fa;
-  color: #333;
+.table th {
+  background-color: #f0f4f8; /* Cor de fundo das cabeçalhos da tabela */
 }
 
-.highlight {
-  background-color: #e9f7fe;
-  color: #007bff;
-  font-weight: bold;
+.table td.info {
+  color: #000; /* Preto para as informações */
 }
 
-/* Responsividade */
-@media (max-width: 600px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    transform: translateX(0); /* Mostra o menu lateral em dispositivos pequenos */
-  }
+.table td .btn {
+  margin: 0 5px;
+}
 
-  .main-content {
-    margin-left: 0; /* Ajusta o conteúdo principal */
-  }
-
-  /* Mostra o menu apenas ao interagir com ele no mobile */
-  .sidebar {
-    display: block;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-  }
-
-  .sidebar.menu-visible {
-    transform: translateX(0);
-  }
-
-  .app-container:hover .sidebar {
-    transform: translateX(0);
-  }
+/* Menu visível */
+.menu-visible {
+  transform: translateX(0); /* Mostrar o menu lateral */
 }
 </style>
