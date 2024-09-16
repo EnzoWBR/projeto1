@@ -6,137 +6,80 @@
         <img src="@/assets/logo2.png" alt="Logo" class="sidebar-logo" />
       </div>
       <ul>
-        <li class="active">Escolas</li>
-        <li>Alunos</li>
-        <li>Organização</li>
+        <li :class="{ 'active': isActive('escolas') }" @click="navigateTo('escolas')">Escolas</li>
+        <li :class="{ 'active': isActive('alunos') }" @click="navigateTo('alunos')">Alunos</li>
+        <li :class="{ 'active': isActive('organizacao') }" @click="navigateTo('organizacao')">Organização</li>
       </ul>
     </aside>
 
     <!-- Conteúdo Principal -->
     <main class="main-content">
-      <!-- Header com Imagem -->
       <header class="header">
+        <button class="menu-toggle" @click="toggleMenu">
+          <span class="menu-icon">&#9776;</span>
+        </button>
         <img src="@/assets/washington.png" alt="Logo" class="logo" />
-        <h1>Gerenciador de Escolas</h1>
+        <h1>{{ pageTitle }}</h1>
       </header>
-
-      <!-- Formulário para adicionar ou editar escola -->
-      <form @submit.prevent="saveEscola" class="form">
-        <div class="form-group">
-          <label for="nome">Nome</label>
-          <input id="nome" type="text" v-model="escola.nome" placeholder="Digite aqui o seu nome" required />
-        </div>
-        <div class="form-group">
-          <label for="endereco">Endereço</label>
-          <input id="endereco" type="text" v-model="escola.endereco" placeholder="Digite aqui o endereço" required />
-        </div>
-        <div class="form-group">
-          <label for="cep">CEP</label>
-          <input id="cep" type="text" v-model="escola.cep" placeholder="Digite aqui o CEP" required />
-        </div>
-        <div class="form-group">
-          <label for="telefone">Telefone</label>
-          <input id="telefone" type="text" v-model="escola.telefone" placeholder="Digite aqui o Telefone" required />
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input id="email" type="email" v-model="escola.email" placeholder="Digite aqui o email" required />
-        </div>
-        <button type="submit" class="btn btn-primary">{{ editando ? 'Atualizar' : 'Adicionar' }} Escola</button>
-      </form>
-
-      <!-- Listagem das escolas -->
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Endereço</th>
-            <th>CEP</th>
-            <th>Telefone</th>
-            <th>Email</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(escola, index) in escolas" :key="escola.id">
-            <td class="info">{{ escola.nome }}</td>
-            <td class="info">{{ escola.endereco }}</td>
-            <td class="info">{{ escola.cep }}</td>
-            <td>{{ escola.telefone }}</td>
-            <td>{{ escola.email }}</td>
-            <td>
-              <button class="btn btn-edit" @click="editarEscola(index)">Editar</button>
-              <button class="btn btn-delete" @click="removerEscola(index)">Excluir</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <router-view />
     </main>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import { useRouter, useRoute } from 'vue-router';
 
 export default {
   data() {
     return {
-      escolas: [], // Lista de escolas
-      escola: { nome: '', endereco: '', cep: '', telefone: '', email: '' }, // Escola atual para adicionar ou editar
-      editando: false,
-      indiceEdicao: null,
-      menuVisible: false
+      menuVisible: false,
+      pageTitle: 'Gerenciador de Alunos'
     };
   },
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+
+    function navigateTo(page) {
+      router.push({ name: page });
+    }
+
+    function isActive(page) {
+      return route.name === page;
+    }
+
+    return { navigateTo, isActive };
+  },
   methods: {
-    async fetchEscolas() {
-      try {
-        const response = await axios.get('http://localhost:3333/escolas');
-        this.escolas = response.data.escolas || [];
-      } catch (error) {
-        console.error('Erro ao buscar escolas:', error);
-      }
-    },
-    async saveEscola() {
-      try {
-        if (this.editando) {
-          // Atualiza a escola existente
-          await axios.put(`http://localhost:3333/escolas/${this.escola.id}`, this.escola);
-          this.editando = false;
-        } else {
-          // Adiciona nova escola
-          await axios.post('http://localhost:3333/escolas', this.escola);
-        }
-        // Recarrega a lista de escolas
-        await this.fetchEscolas();
-        // Limpa o formulário
-        this.escola = { nome: '', endereco: '', cep: '', telefone: '', email: '' };
-      } catch (error) {
-        console.error('Erro ao salvar a escola:', error);
-      }
-    },
-    editarEscola(index) {
-      this.escola = { ...this.escolas[index] };
-      this.editando = true;
-      this.indiceEdicao = index;
-    },
-    async removerEscola(index) {
-      try {
-        await axios.delete(`http://localhost:3333/escolas/${this.escolas[index].id}`);
-        this.escolas.splice(index, 1);
-      } catch (error) {
-        console.error('Erro ao remover a escola:', error);
-      }
-    },
     showMenu() {
-      this.menuVisible = true;
+      if (window.innerWidth >= 768) {
+        this.menuVisible = true;
+      }
     },
     hideMenu() {
-      this.menuVisible = false;
+      if (window.innerWidth >= 768) {
+        this.menuVisible = false;
+      }
+    },
+    toggleMenu() {
+      if (window.innerWidth < 768) {
+        this.menuVisible = !this.menuVisible;
+      }
+    },
+    handleResize() {
+      if (window.innerWidth >= 768) {
+        this.menuVisible = true;
+      } else {
+        this.menuVisible = false;
+      }
     }
   },
-  async created() {
-    await this.fetchEscolas();
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   }
 };
 </script>
@@ -145,24 +88,25 @@ export default {
 /* Layout Principal */
 .app-container {
   display: flex;
-  font-family: 'Poppins', sans-serif; /* Fonte Poppins */
-  transition: transform 0.3s ease; /* Transição suave para o deslocamento */
-  background-color: #f0f4f8; /* Cor de fundo leve */
+  font-family: 'Poppins', sans-serif;
+  background-color: #f0f4f8;
+  min-height: 100vh; /* Adicionar altura mínima para ocupar a tela toda */
 }
 
 /* Menu Lateral */
 .sidebar {
-  width: 200px;
-  background-color: #1a1a1d; /* Cor de fundo mais escura */
+  width: 200px; /* Tamanho padrão do menu lateral */
+  background-color: #1a1a1d;
   padding: 20px;
   color: white;
   height: 100vh;
   position: fixed;
   left: 0;
   top: 0;
-  transform: translateX(-200px); /* Inicialmente escondido */
   transition: transform 0.3s ease;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  transform: translateX(0);
+  z-index: 1000;
 }
 
 /* Header do Menu Lateral */
@@ -189,22 +133,23 @@ export default {
   cursor: pointer;
   font-weight: bold;
   border-radius: 4px;
-  background-color: #444; /* Fundo cinza escuro */
-  color: #f0f0f0; /* Cor do texto */
+  background-color: #444;
+  color: #f0f0f0;
   transition: background-color 0.3s;
 }
 
 .sidebar li.active,
 .sidebar li:hover {
-  background-color: #007bff; /* Azul vibrante */
+  background-color: #007bff;
 }
 
 /* Conteúdo Principal */
 .main-content {
-  margin-left: 220px; /* Ajustado para deixar espaço para o menu lateral */
+  margin-left: 200px; /* Ajuste de margem para acomodar o menu lateral */
   padding: 20px;
-  background-color: #f0f4f8; /* Cor de fundo leve */
+  background-color: #f0f4f8;
   flex-grow: 1;
+  transition: margin-left 0.3s ease;
 }
 
 /* Header */
@@ -213,9 +158,9 @@ export default {
   align-items: center;
   margin-bottom: 20px;
   padding: 10px;
-  background-color: #ffffff; /* Fundo branco */
+  background-color: #ffffff;
   color: #333;
-  border-bottom: 2px solid #007bff; /* Linha inferior azul */
+  border-bottom: 2px solid #007bff;
 }
 
 .logo {
@@ -231,96 +176,70 @@ h1 {
   font-family: 'Poppins', sans-serif;
 }
 
-/* Formulário */
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 20px;
-  background-color: #fff; /* Fundo branco */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-input {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: border-color 0.3s;
-}
-
-input:focus {
-  border-color: #007bff; /* Azul */
-}
-
-/* Botões */
-.btn {
-  color: white;
+/* Botão de Menu */
+.menu-toggle {
+  display: none;
+  background: none;
   border: none;
-  border-radius: 4px;
-  padding: 10px;
+  color: #333;
+  font-size: 24px;
   cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
-  margin-top: 10px;
-}
-
-.btn-primary {
-  background-color: #28a745; /* Verde para adicionar e atualizar */
-}
-
-.btn-edit {
-  background-color: #007bff; /* Azul para editar */
-}
-
-.btn-delete {
-  background-color: #dc3545; /* Vermelho para excluir */
-}
-
-.btn:hover {
-  opacity: 0.8;
-}
-
-/* Tabela */
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.table th, .table td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-}
-
-.table th {
-  background-color: #f0f4f8; /* Cor de fundo das cabeçalhos da tabela */
-}
-
-.table td.info {
-  color: #000; /* Preto para as informações */
-}
-
-.table td .btn {
-  margin: 0 5px;
+  margin-right: 20px;
 }
 
 /* Menu visível */
 .menu-visible {
-  transform: translateX(0); /* Mostrar o menu lateral */
+  transform: translateX(0);
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 180px; /* Diminuir o tamanho do menu lateral em telas menores */
+  }
+
+  .main-content {
+    margin-left: 180px; /* Ajustar margem para o menu menor */
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 150px; /* Diminuir ainda mais o tamanho do menu lateral em telas pequenas */
+    transform: translateX(-100%);
+    display: block;
+  }
+
+  .main-content {
+    margin-left: 0; /* Remover margem para telas pequenas */
+  }
+
+  .menu-toggle {
+    display: block; /* Mostrar o botão de menu em telas menores */
+  }
+
+  .menu-visible {
+    transform: translateX(0);
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .sidebar {
+    width: 120px; /* Ajuste para telas muito pequenas */
+  }
+
+  .menu-toggle {
+    display: block; /* Mostrar o botão de menu em telas muito pequenas */
+  }
 }
 </style>
