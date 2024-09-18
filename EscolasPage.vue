@@ -213,17 +213,17 @@ button.btn-edit {
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 15px;
+  padding: 10px;
   border-radius: 4px;
   cursor: pointer;
-  margin-bottom: 5px; /* Espaço pequeno entre os botões */
+  margin-right: 10px; /* Espaço de 10px à direita */
 }
 
 button.btn-delete {
   background-color: #dc3545;
   color: white;
   border: none;
-  padding: 10px 15px;
+  padding: 10px;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -274,4 +274,3 @@ button.btn-delete {
   }
 }
 </style>
-
