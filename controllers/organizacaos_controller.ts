@@ -1,87 +1,54 @@
 import Organizacao from '#models/organizacao'
 import type { HttpContext } from '@adonisjs/core/http'
 
-export default class OrganizacaoController {
-  async index({ response }: HttpContext) {
+export default class OrganizacoesController {
+  public async index({ response }: HttpContext) {
     try {
-      const organizacao = await Organizacao.all()
-      if (organizacao.length) {
-        response.safeStatus(200).json({
-          organizacao: organizacao,
-        })
-      } else {
-        response.safeStatus(200).json({
-          message: `Não ha organizações a listar!`,
-        })
-      }
+      const organizacoes = await Organizacao.all();
+      return response.status(200).json(organizacoes.length ? { organizacoes } : { message: 'Não há organizações a listar!' });
     } catch (error) {
-      response.safeStatus(400).json({
-        message: `Erro ao consultar as organizações! ${error}`,
-      })
+      return response.status(400).json({ message: `Erro ao consultar as organizações! ${error.message}` });
     }
   }
 
-  async store({ request, response }: HttpContext) {
-    const { ...data } = request.all()
-
+  public async store({ request, response }: HttpContext) {
+    const data = request.only(['nome', 'endereco', 'cep', 'telefone', 'email']);
     try {
-      const organizacaoAdd = await Organizacao.create(data)
-
-      return response.safeStatus(201).json({
-        message: `Organização ${organizacaoAdd.nome}, criada com sucesso!`,
-      })
+      const organizacaoAdd = await Organizacao.create(data);
+      return response.status(201).json({ message: `Organização ${organizacaoAdd.nome}, criada com sucesso!` });
     } catch (error) {
-      response.safeStatus(400).json({
-        message: `Erro ao incluir a organização!${error}`,
-      })
+      return response.status(400).json({ message: `Erro ao incluir a organização! ${error.message}` });
     }
   }
 
-  async show({ params, response }: HttpContext) {
+  public async show({ params, response }: HttpContext) {
     try {
-      const organization = await Organizacao.find(params.id)
-
-      if (organization !== null) {
-        return response.safeStatus(200).json({
-          organization: organization,
-        })
-      } else {
-        return response.safeStatus(200).json({
-          message: `Organização não localizada!`,
-        })
-      }
+      const organizacao = await Organizacao.find(params.id);
+      return organizacao ? response.status(200).json(organizacao) : response.status(404).json({ message: 'Organização não localizada!' });
     } catch (error) {
-      response.safeStatus(400).json({
-        message: `Erro ao consultar a organização`,
-      })
+      return response.status(400).json({ message: `Erro ao consultar a organização! ${error.message}` });
     }
   }
 
-  async update({ params, request, response }: HttpContext) {
+  public async update({ params, request, response }: HttpContext) {
     try {
-      const organizacao= await Organizacao.findOrFail(params.id)
-
-      const { ...data } = request.only([
-        'nome',
-        'endereco',
-        'telefone',
-        'email',
-        'createdAt',
-        'updatedAt',
-        
-      ])
-
-      organizacao.merge(data)
-
-      const organizationModified = await organizacao.save()
-
-      return response.safeStatus(201).json({
-        message: `Organização ${organizationModified.nome}, alterada com sucesso!`,
-      })
+      const organizacao = await Organizacao.findOrFail(params.id);
+      const data = request.only(['nome', 'endereco', 'cep', 'telefone', 'email']);
+      organizacao.merge(data);
+      await organizacao.save();
+      return response.status(200).json({ message: `Organização ${organizacao.nome} alterada com sucesso!` });
     } catch (error) {
-      response.safeStatus(400).json({
-        message: `Erro ao alterar à organização! ${error}`,
-      })
+      return response.status(400).json({ message: `Erro ao alterar a organização! ${error.message}` });
+    }
+  }
+
+  public async destroy({ params, response }: HttpContext) {
+    try {
+      const organizacao = await Organizacao.findOrFail(params.id);
+      await organizacao.delete();
+      return response.status(200).json({ message: `Organização excluída com sucesso!` });
+    } catch (error) {
+      return response.status(400).json({ message: `Erro ao excluir a organização! ${error.message}` });
     }
   }
 }
