@@ -1,5 +1,5 @@
 import AlunosController from '#controllers/alunos_controller'
-import OrganizacaoController from '#controllers/organizacaos_controller'
+import OrganizacaoController from '#controllers/organizacao_controller'
 import EscolasController from '#controllers/escolas_controller'
 import CursosController from '#controllers/cursos_controller'
 import ModulosController from '#controllers/modulos_controller'
@@ -21,11 +21,13 @@ router.get('alunos', [AlunosController, 'index'])
 router.post('alunos', [AlunosController, 'store'])
 router.get('alunos/:id', [AlunosController, 'show'])
 router.put('alunos/:id', [AlunosController, 'update'])
+router.delete('alunos/:id', [AlunosController, 'destroy'])  // Adicione esta linha
 
 router.get('organizacao', [OrganizacaoController, 'index'])
 router.post('organizacao', [OrganizacaoController, 'store'])
 router.get('organizacao/:id', [OrganizacaoController, 'show'])
 router.put('organizacao/:id', [OrganizacaoController, 'update'])
+router.delete('organizacao/:id', [OrganizacaoController, 'destroy'])  // Adicione esta linha
 
 router.get('escolas', [EscolasController, 'index'])
 router.post('escolas', [EscolasController, 'store'])
