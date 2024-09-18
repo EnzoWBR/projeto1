@@ -1,9 +1,12 @@
 <template>
   <div class="app-container">
     <!-- Menu Lateral -->
-    <aside class="sidebar" :class="{ 'menu-visible': menuVisible }" @mouseover="showMenu" @mouseleave="hideMenu">
+    <aside class="sidebar" :class="{ 'menu-visible': menuVisible }">
       <div class="sidebar-header">
         <img src="@/assets/logo2.png" alt="Logo" class="sidebar-logo" />
+        <button class="menu-toggle" @click="toggleMenu">
+          <span class="menu-icon">&#9776;</span>
+        </button>
       </div>
       <ul>
         <li :class="{ 'active': isActive('escolas') }" @click="navigateTo('escolas')">Escolas</li>
@@ -33,7 +36,7 @@ export default {
   data() {
     return {
       menuVisible: false,
-      pageTitle: 'Gerenciador de Alunos'
+      pageTitle: 'Gerenciador de Dados'
     };
   },
   setup() {
@@ -51,20 +54,8 @@ export default {
     return { navigateTo, isActive };
   },
   methods: {
-    showMenu() {
-      if (window.innerWidth >= 768) {
-        this.menuVisible = true;
-      }
-    },
-    hideMenu() {
-      if (window.innerWidth >= 768) {
-        this.menuVisible = false;
-      }
-    },
     toggleMenu() {
-      if (window.innerWidth < 768) {
-        this.menuVisible = !this.menuVisible;
-      }
+      this.menuVisible = !this.menuVisible;
     },
     handleResize() {
       if (window.innerWidth >= 768) {
@@ -90,35 +81,51 @@ export default {
   display: flex;
   font-family: 'Poppins', sans-serif;
   background-color: #f0f4f8;
-  min-height: 100vh; /* Adicionar altura mínima para ocupar a tela toda */
+  min-height: 100vh;
 }
 
 /* Menu Lateral */
 .sidebar {
-  width: 200px; /* Tamanho padrão do menu lateral */
+  width: 135px;
   background-color: #1a1a1d;
   padding: 20px;
   color: white;
-  height: 100vh;
+  height: 100vh; /* Ajuste para ocupar toda a altura */
   position: fixed;
   left: 0;
   top: 0;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-  transform: translateX(0);
+  transform: translateX(-100%);
   z-index: 1000;
+  opacity: 0;
+}
+
+/* Menu visível */
+.menu-visible {
+  transform: translateX(0);
+  opacity: 1;
 }
 
 /* Header do Menu Lateral */
 .sidebar-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 }
 
 .sidebar-logo {
   max-width: 150px;
   height: auto;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
 }
 
 /* Estilos do Menu Lateral */
@@ -145,7 +152,7 @@ export default {
 
 /* Conteúdo Principal */
 .main-content {
-  margin-left: 200px; /* Ajuste de margem para acomodar o menu lateral */
+  margin-left: 150px;
   padding: 20px;
   background-color: #f0f4f8;
   flex-grow: 1;
@@ -187,39 +194,28 @@ h1 {
   margin-right: 20px;
 }
 
-/* Menu visível */
-.menu-visible {
-  transform: translateX(0);
-}
-
 /* Responsividade */
 @media (max-width: 1024px) {
   .sidebar {
-    width: 180px; /* Diminuir o tamanho do menu lateral em telas menores */
+    width: 180px;
   }
 
   .main-content {
-    margin-left: 180px; /* Ajustar margem para o menu menor */
+    margin-left: 180px;
   }
 }
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 150px; /* Diminuir ainda mais o tamanho do menu lateral em telas pequenas */
-    transform: translateX(-100%);
-    display: block;
+    width: 150px;
   }
 
   .main-content {
-    margin-left: 0; /* Remover margem para telas pequenas */
+    margin-left: 0;
   }
 
   .menu-toggle {
-    display: block; /* Mostrar o botão de menu em telas menores */
-  }
-
-  .menu-visible {
-    transform: translateX(0);
+    display: block;
   }
 
   .header {
@@ -235,11 +231,7 @@ h1 {
 
 @media (max-width: 576px) {
   .sidebar {
-    width: 120px; /* Ajuste para telas muito pequenas */
-  }
-
-  .menu-toggle {
-    display: block; /* Mostrar o botão de menu em telas muito pequenas */
+    width: 120px;
   }
 }
 </style>
