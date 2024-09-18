@@ -44,7 +44,7 @@
           <td>{{ aluno.email }}</td>
           <td>
             <button class="btn btn-edit" @click="editarAluno(index)">Editar</button>
-            <button class="btn btn-delete" @click="removerAluno(index)">Excluir</button>
+            <button class="btn btn-delete" @click="removerAluno(aluno.id)">Excluir</button>
           </td>
         </tr>
       </tbody>
@@ -92,10 +92,11 @@ export default {
       this.editando = true;
       this.indiceEdicao = index;
     },
-    async removerAluno(index) {
+    async removerAluno(id) {
       try {
-        await axios.delete(`http://localhost:3333/alunos/${this.alunos[index].id}`);
-        this.alunos.splice(index, 1);
+        await axios.delete(`http://localhost:3333/alunos/${id}`);
+        // Recarregar a lista de alunos após a exclusão
+        await this.fetchAlunos();
       } catch (error) {
         console.error('Erro ao remover o aluno:', error);
       }
@@ -182,7 +183,7 @@ button.btn-primary {
   margin-top: 10px;
 }
 
-/* Ajustes responsivos */
+
 @media (max-width: 768px) {
   .form-row {
     flex-direction: column;
@@ -233,7 +234,7 @@ button.btn-primary {
   }
 }
 
-/* Tabela */
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -260,7 +261,7 @@ button.btn-edit {
   padding: 10px 15px;
   border-radius: 4px;
   cursor: pointer;
-  margin-right: 5px; /* Espaço pequeno entre os botões */
+  margin-right: 5px; 
 }
 
 button.btn-delete {
