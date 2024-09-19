@@ -38,11 +38,11 @@
       </thead>
       <tbody>
         <tr v-for="(aluno, index) in alunos" :key="aluno.id">
-          <td class="info">{{ aluno.nome }}</td>
-          <td>{{ aluno.endereco }}</td>
-          <td>{{ aluno.telefone }}</td>
-          <td>{{ aluno.email }}</td>
-          <td>
+          <td class="info" data-label="Nome">{{ aluno.nome }}</td>
+          <td data-label="Endereço">{{ aluno.endereco }}</td>
+          <td data-label="Telefone">{{ aluno.telefone }}</td>
+          <td data-label="Email">{{ aluno.email }}</td>
+          <td data-label="Ações">
             <button class="btn btn-edit" @click="editarAluno(index)">Editar</button>
             <button class="btn btn-delete" @click="removerAluno(aluno.id)">Excluir</button>
           </td>
@@ -183,7 +183,47 @@ button.btn-primary {
   margin-top: 10px;
 }
 
+/* Tabela */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
 
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.table th {
+  background-color: #f4f4f4;
+}
+
+.info {
+  color: black;
+}
+
+/* Botões */
+button.btn-edit {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+button.btn-delete {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
   .form-row {
     flex-direction: column;
@@ -232,44 +272,5 @@ button.btn-primary {
     font-weight: bold;
     text-align: left;
   }
-}
-
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-
-.table th, .table td {
-  border: 1px solid #ddd;
-  padding: 10px;
-}
-
-.table th {
-  background-color: #f4f4f4;
-}
-
-.info {
-  color: black;
-}
-
-button.btn-edit {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-right: 5px; 
-}
-
-button.btn-delete {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  cursor: pointer;
 }
 </style>
