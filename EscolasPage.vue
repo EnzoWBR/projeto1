@@ -23,12 +23,12 @@
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group email">
+        <div class="form-group">
           <label for="email">Email</label>
           <input id="email" type="email" v-model="escola.email" placeholder="Digite o email" required />
         </div>
       </div>
-      <button type="submit" class="btn btn-submit">{{ editando ? 'Atualizar' : 'Adicionar' }} Escola</button>
+      <button type="submit" class="btn btn-primary">{{ editando ? 'Atualizar' : 'Adicionar' }} Escola</button>
     </form>
 
     <!-- Listagem das escolas -->
@@ -45,14 +45,14 @@
       </thead>
       <tbody>
         <tr v-for="(escola, index) in escolas" :key="escola.id">
-          <td class="info">{{ escola.nome }}</td>
-          <td class="info">{{ escola.endereco }}</td>
-          <td class="info">{{ escola.cep }}</td>
-          <td>{{ escola.telefone }}</td>
-          <td>{{ escola.email }}</td>
-          <td>
+          <td class="info" data-label="Nome">{{ escola.nome }}</td>
+          <td class="info" data-label="Endereço">{{ escola.endereco }}</td>
+          <td class="info" data-label="CEP">{{ escola.cep }}</td>
+          <td data-label="Telefone">{{ escola.telefone }}</td>
+          <td data-label="Email">{{ escola.email }}</td>
+          <td data-label="Ações">
             <button class="btn btn-edit" @click="editarEscola(index)">Editar</button>
-            <button class="btn btn-delete" @click="removerEscola(index)">Excluir</button>
+            <button class="btn btn-delete" @click="removerEscola(escola.id)">Excluir</button>
           </td>
         </tr>
       </tbody>
@@ -100,47 +100,34 @@ export default {
       this.editando = true;
       this.indiceEdicao = index;
     },
-    async removerEscola(index) {
+    async removerEscola(id) {
       try {
-        await axios.delete(`http://localhost:3333/escolas/${this.escolas[index].id}`);
-        this.escolas.splice(index, 1);
+        await axios.delete(`http://localhost:3333/escolas/${id}`);
+        await this.fetchEscolas();
       } catch (error) {
         console.error('Erro ao remover a escola:', error);
       }
     },
     formatarNome() {
-      // Permitir apenas letras no campo nome
       this.escola.nome = this.escola.nome.replace(/[^a-zA-Z\s]/g, '');
     },
     formatarCep() {
-      // Remover todos os caracteres não numéricos
       let cep = this.escola.cep.replace(/\D/g, '');
-
-      // Adicionar formatação
       if (cep.length > 5) {
-        cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
+        cep = cep.slice(0, 5) + '-' + cep.slice(5);
       }
-
-      // Atualizar o modelo com o CEP formatado
       this.escola.cep = cep;
     },
     formatarTelefone() {
-      // Remover todos os caracteres não numéricos
       let telefone = this.escola.telefone.replace(/\D/g, '');
-
-      // Adicionar formatação
       if (telefone.length > 11) {
-        telefone = telefone.slice(0, 11); // Limitar a 11 dígitos
+        telefone = telefone.slice(0, 11);
       }
       if (telefone.length > 6) {
         telefone = '(' + telefone.slice(0, 2) + ') ' + telefone.slice(2, 7) + '-' + telefone.slice(7);
       } else if (telefone.length > 2) {
         telefone = '(' + telefone.slice(0, 2) + ') ' + telefone.slice(2);
-      } else if (telefone.length > 0) {
-        telefone = '(' + telefone.slice(0, 2) + ')' + telefone.slice(2);
       }
-
-      // Atualizar o modelo com o telefone formatado
       this.escola.telefone = telefone;
     }
   },
@@ -173,11 +160,6 @@ export default {
   flex: 1;
 }
 
-.form-group.email {
-  flex: 1 0 100%;
-  margin-bottom: 20px;
-}
-
 label {
   display: block;
   margin-bottom: 5px;
@@ -192,8 +174,7 @@ input {
   box-sizing: border-box;
 }
 
-/* Alinhamento e botão de adicionar */
-.btn-submit {
+button.btn-primary {
   background-color: #28a745;
   color: white;
   border: none;
@@ -206,26 +187,6 @@ input {
   width: 100%;
   text-align: center;
   margin-top: 10px;
-}
-
-/* Botões de Ação */
-button.btn-edit {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-right: 10px; /* Espaço de 10px à direita */
-}
-
-button.btn-delete {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 /* Tabela */
@@ -248,6 +209,26 @@ button.btn-delete {
   color: black;
 }
 
+/* Botões */
+button.btn-edit {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+button.btn-delete {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .form-row {
@@ -257,20 +238,45 @@ button.btn-delete {
   .form-group {
     width: 100%;
   }
-  
+
   .table {
     font-size: 14px;
+    width: 100%;
+    border-collapse: collapse;
   }
 
   .table th, .table td {
-    padding: 8px;
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 5px;
   }
 
-  /* Ajuste para botões de ação */
-  .table td {
-    display: flex;
-    flex-direction: column;
-    gap: 5px; /* Espaço entre botões */
+  .table thead {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: block;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .table tbody td {
+    border: none;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 10px;
+    font-weight: bold;
+    text-align: left;
   }
 }
 </style>
