@@ -5,24 +5,52 @@
       <div class="form-row">
         <div class="form-group">
           <label for="nome">Nome</label>
-          <input id="nome" type="text" v-model="aluno.nome" @input="formatarNome" placeholder="Digite o nome" required />
+          <input
+            id="nome"
+            type="text"
+            v-model="aluno.nome"
+            @input="formatarNome"
+            placeholder="Digite o nome"
+            required
+          />
         </div>
         <div class="form-group">
           <label for="endereco">Endereço</label>
-          <input id="endereco" type="text" v-model="aluno.endereco" placeholder="Digite o endereço" required />
+          <input
+            id="endereco"
+            type="text"
+            v-model="aluno.endereco"
+            placeholder="Digite o endereço"
+            required
+          />
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label for="telefone">Telefone</label>
-          <input id="telefone" type="text" v-model="aluno.telefone" @input="formatarTelefone" placeholder="Digite o telefone" required />
+          <input
+            id="telefone"
+            type="text"
+            v-model="aluno.telefone"
+            @input="formatarTelefone"
+            placeholder="Digite o telefone"
+            required
+          />
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="email" type="email" v-model="aluno.email" placeholder="Digite o email" required />
+          <input
+            id="email"
+            type="email"
+            v-model="aluno.email"
+            placeholder="Digite o email"
+            required
+          />
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">{{ editando ? 'Atualizar' : 'Adicionar' }} Aluno</button>
+      <button type="submit" class="btn btn-primary">
+        {{ editando ? 'Atualizar' : 'Adicionar' }} Aluno
+      </button>
     </form>
 
     <!-- Listagem dos alunos -->
@@ -75,16 +103,22 @@ export default {
     },
     async saveAluno() {
       try {
+        let response;
         if (this.editando) {
-          await axios.put(`http://localhost:3333/alunos/${this.aluno.id}`, this.aluno);
+          response = await axios.put(`http://localhost:3333/alunos/${this.aluno.id}`, this.aluno);
           this.editando = false;
         } else {
-          await axios.post('http://localhost:3333/alunos', this.aluno);
+          response = await axios.post('http://localhost:3333/alunos', this.aluno);
         }
-        await this.fetchAlunos();
+        await this.fetchAlunos(); // Atualizar a lista de alunos
         this.aluno = { nome: '', endereco: '', telefone: '', email: '' };
+        
+        // Mostrar mensagem de sucesso
+        alert(response.data.message || 'Aluno salvo com sucesso!');
       } catch (error) {
         console.error('Erro ao salvar o aluno:', error);
+        // Mostrar mensagem de erro
+        alert('Erro ao salvar o aluno. Verifique o console para mais detalhes.');
       }
     },
     editarAluno(index) {
