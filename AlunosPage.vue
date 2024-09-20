@@ -70,9 +70,12 @@
           <td data-label="Endereço">{{ aluno.endereco }}</td>
           <td data-label="Telefone">{{ aluno.telefone }}</td>
           <td data-label="Email">{{ aluno.email }}</td>
-          <td data-label="Ações">
-            <button class="btn btn-edit" @click="editarAluno(index)">Editar</button>
-            <button class="btn btn-delete" @click="removerAluno(aluno.id)">Excluir</button>
+          <td data-label="Ações" class="actions">
+            <div style="display: flex; justify-content: center;">
+              <button class="btn btn-edit" @click="editarAluno(index)">Editar</button>
+              <button class="btn btn-inactivate" @click="inativarAluno(index)">Inativar</button>
+              <button class="btn btn-delete" @click="removerAluno(aluno.id)">Excluir</button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -114,11 +117,10 @@ export default {
         this.aluno = { nome: '', endereco: '', telefone: '', email: '' };
         
         // Mostrar mensagem de sucesso
-        alert(response.data.message || 'Aluno salvo com sucesso!');
+        alert(response.data.message || 'Aluno(a) salvo com sucesso!');
       } catch (error) {
-        console.error('Erro ao salvar o aluno:', error);
-        // Mostrar mensagem de erro
-        alert('Erro ao salvar o aluno. Verifique o console para mais detalhes.');
+        console.error('Erro ao salvar o aluno(a):', error);
+        alert('Erro ao salvar o aluno(a). Verifique o console para mais detalhes.');
       }
     },
     editarAluno(index) {
@@ -129,23 +131,22 @@ export default {
     async removerAluno(id) {
       try {
         await axios.delete(`http://localhost:3333/alunos/${id}`);
-        // Recarregar a lista de alunos após a exclusão
         await this.fetchAlunos();
       } catch (error) {
-        console.error('Erro ao remover o aluno:', error);
+        console.error('Erro ao remover o aluno(a):', error);
       }
     },
+    inativarAluno(index) {
+      // Apenas remover da lista visualmente, mantendo no backend
+      this.alunos.splice(index, 1);
+    },
     formatarNome() {
-      // Permitir apenas letras no campo nome
       this.aluno.nome = this.aluno.nome.replace(/[^a-zA-Z\s]/g, '');
     },
     formatarTelefone() {
-      // Remover todos os caracteres não numéricos
       let telefone = this.aluno.telefone.replace(/\D/g, '');
-
-      // Adicionar formatação
       if (telefone.length > 11) {
-        telefone = telefone.slice(0, 11); // Limitar a 11 dígitos
+        telefone = telefone.slice(0, 11);
       }
       if (telefone.length > 6) {
         telefone = '(' + telefone.slice(0, 2) + ') ' + telefone.slice(2, 7) + '-' + telefone.slice(7);
@@ -154,8 +155,6 @@ export default {
       } else if (telefone.length > 0) {
         telefone = '(' + telefone.slice(0, 2) + ')' + telefone.slice(2);
       }
-
-      // Atualizar o modelo com o telefone formatado
       this.aluno.telefone = telefone;
     }
   },
@@ -248,6 +247,16 @@ button.btn-edit {
   margin-right: 5px;
 }
 
+button.btn-inactivate {
+  background-color: #e0a800; /* Cor amarela mais escura */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
 button.btn-delete {
   background-color: #dc3545;
   color: white;
@@ -255,6 +264,11 @@ button.btn-delete {
   padding: 10px 15px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+/* Ajuste na tabela */
+.table tbody td {
+  text-align: center; /* Centraliza o conteúdo das células */
 }
 
 /* Responsividade */
@@ -289,22 +303,31 @@ button.btn-delete {
     margin-bottom: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    padding: 10px; /* Adicionar padding aos itens da tabela */
   }
 
   .table tbody td {
     border: none;
-    padding-left: 50%;
+    padding-left: 0; /* Remover padding à esquerda */
     position: relative;
+    display: flex; /* Usar flex para melhor controle do layout */
+    justify-content: space-between; /* Espaço entre os elementos */
+    align-items: center; /* Alinhar verticalmente */
   }
 
   .table tbody td::before {
     content: attr(data-label);
-    position: absolute;
-    left: 0;
-    width: 50%;
-    padding-left: 10px;
     font-weight: bold;
     text-align: left;
+    flex: 1; /* Permitir que o rótulo ocupe espaço */
+  }
+
+  /* Responsividade dos Botões */
+  button {
+    padding: 8px 5px; /* Ajustar padding dos botões */
+    font-size: 12px; /* Diminuir o tamanho da fonte dos botões */
+    margin: 5px; /* Espaço entre os botões */
+    flex: 1; /* Permitir que os botões ocupem o mesmo espaço */
   }
 }
 </style>
