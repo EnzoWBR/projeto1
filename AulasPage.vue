@@ -16,11 +16,11 @@
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label for="descricao">Descrição</label>
+          <label for="conteudo">Conteúdo</label>
           <textarea
-            id="descricao"
-            v-model="aula.descricao"
-            placeholder="Digite a descrição"
+            id="conteudo"
+            v-model="aula.conteudo"
+            placeholder="Digite o conteúdo"
             required
           ></textarea>
         </div>
@@ -47,7 +47,7 @@
       <thead>
         <tr>
           <th>Título</th>
-          <th>Descrição</th>
+          <th>Conteúdo</th>
           <th>Arquivo</th>
           <th>Ações</th>
         </tr>
@@ -55,8 +55,8 @@
       <tbody>
         <tr v-for="(aula, index) in aulas" :key="aula.id">
           <td class="info" data-label="Título">{{ aula.titulo }}</td>
-          <td data-label="Descrição">{{ aula.descricao }}</td>
-          <td data-label="Arquivo">{{ aula.arquivo }}</td>
+          <td data-label="Conteúdo">{{ aula.conteudo }}</td>
+          <td data-label="Arquivo">{{ aula.arquivo || 'Nenhum arquivo anexado' }}</td>
           <td data-label="Ações" class="actions">
             <div style="display: flex; justify-content: center;">
               <button class="btn btn-edit" @click="editarAula(index)">Editar</button>
@@ -76,7 +76,7 @@ export default {
   data() {
     return {
       aulas: [],
-      aula: { titulo: '', descricao: '', arquivo: null },
+      aula: { titulo: '', conteudo: '', arquivo: null },
       editando: false,
       indiceEdicao: null,
     };
@@ -94,25 +94,30 @@ export default {
       try {
         const formData = new FormData();
         formData.append('titulo', this.aula.titulo);
-        formData.append('descricao', this.aula.descricao);
+        formData.append('conteudo', this.aula.conteudo);
         formData.append('arquivo', this.aula.arquivo);
 
         let response;
         if (this.editando) {
-          response = await axios.put(`http://localhost:3333/aulas/${this.aula.id}`, formData);
+          response = await axios.put(`http://localhost:3333/aulas/${this.aulas[this.indiceEdicao].id}`, formData);
           this.editando = false;
         } else {
           response = await axios.post('http://localhost:3333/aulas', formData);
         }
-        await this.fetchAulas(); // Atualizar a lista de aulas
-        this.aula = { titulo: '', descricao: '', arquivo: null };
+        await this.fetchAulas(); 
+        this.resetForm();
         
-        // Mostrar mensagem de sucesso
+  
         alert(response.data.message || 'Aula salva com sucesso!');
       } catch (error) {
         console.error('Erro ao salvar a aula:', error);
         alert('Erro ao salvar a aula. Verifique o console para mais detalhes.');
       }
+    },
+    resetForm() {
+      this.aula = { titulo: '', conteudo: '', arquivo: null };
+      this.editando = false;
+      this.indiceEdicao = null;
     },
     editarAula(index) {
       this.aula = { ...this.aulas[index] };
@@ -138,7 +143,7 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos similares ao código anterior, mas aplicados para aulas */
+
 .form {
   display: flex;
   flex-direction: column;
