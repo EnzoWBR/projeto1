@@ -21,19 +21,19 @@ router.get('alunos', [AlunosController, 'index'])
 router.post('alunos', [AlunosController, 'store'])
 router.get('alunos/:id', [AlunosController, 'show'])
 router.put('alunos/:id', [AlunosController, 'update'])
-router.delete('alunos/:id', [AlunosController, 'destroy'])  // Adicione esta linha
+router.delete('alunos/:id', [AlunosController, 'destroy'])  
 
 router.get('organizacao', [OrganizacaoController, 'index'])
 router.post('organizacao', [OrganizacaoController, 'store'])
 router.get('organizacao/:id', [OrganizacaoController, 'show'])
 router.put('organizacao/:id', [OrganizacaoController, 'update'])
-router.delete('organizacao/:id', [OrganizacaoController, 'destroy'])  // Adicione esta linha
+router.delete('organizacao/:id', [OrganizacaoController, 'destroy'])  
 
 router.get('escolas', [EscolasController, 'index'])
 router.post('escolas', [EscolasController, 'store'])
 router.get('escolas/:id', [EscolasController, 'show'])
 router.put('escolas/:id', [EscolasController, 'update'])
-router.delete('escolas/:id', [EscolasController, 'destroy'])  // Adicione esta linha
+router.delete('escolas/:id', [EscolasController, 'destroy'])  
 
 router.get('cursos', [CursosController, 'index'])
 router.post('cursos', [CursosController, 'store'])
@@ -54,7 +54,7 @@ router.get('aulas', [AulasController, 'index'])
 router.post('aulas', [AulasController, 'store'])
 router.get('aulas/:id', [AulasController, 'show'])
 router.put('aulas/:id', [AulasController, 'update'])
-router.delete('aulas/:id', [AulasController, 'destroy'])  // Adicione esta linha
+router.delete('aulas/:id', [AulasController, 'destroy'])  
 
 router.get('exercicios', [ExercicioController, 'index'])
 router.post('exercicios', [ExercicioController, 'store'])
