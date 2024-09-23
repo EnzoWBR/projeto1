@@ -54,6 +54,7 @@ router.get('aulas', [AulasController, 'index'])
 router.post('aulas', [AulasController, 'store'])
 router.get('aulas/:id', [AulasController, 'show'])
 router.put('aulas/:id', [AulasController, 'update'])
+router.delete('aulas/:id', [AulasController, 'destroy'])  // Adicione esta linha
 
 router.get('exercicios', [ExercicioController, 'index'])
 router.post('exercicios', [ExercicioController, 'store'])
