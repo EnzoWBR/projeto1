@@ -3,22 +3,20 @@
     <h1>BEM VINDO AO GERENCIADOR DE DADOS</h1>
     <p>Aqui você poderá gerir as informações necessárias para seu sistema operacional.</p>
     
-    <!-- Seção de animação -->
+    
     <div class="anima">
       <p>Explore nossos recursos e comece a otimizar seus processos!</p>
     </div>
 
-    <!-- Imagem centralizada -->
     <div class="imagem">
       <img src="@/assets/wash2.jpeg" alt="Imagem de boas-vindas" />
     </div>
 
-    <!-- Botão animado -->
     <div class="botao">
       <button @click="irParaEscolas">Comece Agora</button>
     </div>
 
-    <!-- Linha azul ao final da página -->
+  
     <div class="linha-azul"></div>
   </div>
 </template>
@@ -88,7 +86,7 @@ export default {
   background-color: #45a049;
 }
 
-/* Linha azul ao final da página */
+
 .linha-azul {
   width: 100%;
   height: 5px;
@@ -96,7 +94,7 @@ export default {
   margin-top: 50px;
 }
 
-/* Animações */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
