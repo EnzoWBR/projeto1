@@ -3,29 +3,37 @@
     <!-- Menu Lateral -->
     <aside class="sidebar" :class="{ 'menu-visible': menuVisible }">
       <div class="sidebar-header">
-        <img src="@/assets/logo2.png" alt="Logo" class="sidebar-logo" />
+        <img src="@/assets/logo2.png" alt="Logo" class="sidebar-logo" @click="navigateTo('bemVindo')" />
         <button class="menu-toggle" @click="toggleMenu">
-          <span class="menu-icon">&#9776;</span>
+          <!-- Condição para alterar a cor do ícone do sanduíche -->
+          <span class="menu-icon" :class="{ 'menu-icon-white': menuVisible }">&#9776;</span>
         </button>
       </div>
       <ul>
         <li :class="{ 'active': isActive('escolas') }" @click="navigateTo('escolas')">Escolas</li>
         <li :class="{ 'active': isActive('alunos') }" @click="navigateTo('alunos')">Alunos</li>
         <li :class="{ 'active': isActive('organizacao') }" @click="navigateTo('organizacao')">Organização</li>
+        <li :class="{ 'active': isActive('aulas') }" @click="navigateTo('aulas')">Aulas</li>
       </ul>
     </aside>
 
     <!-- Conteúdo Principal -->
     <main class="main-content">
-      <header class="header">
+      <header class="header" :class="{ 'centered-header': isCentered }">
         <button class="menu-toggle" @click="toggleMenu">
+          <!-- O ícone de menu fora do sidebar -->
           <span class="menu-icon">&#9776;</span>
         </button>
-        <img src="@/assets/washington.png" alt="Logo" class="logo" />
-        <h1>{{ pageTitle }}</h1>
+        <img v-if="!isCentered" src="@/assets/washington.png" alt="Logo" class="logo" />
+        <h1 v-if="!isCentered">{{ pageTitle }}</h1>
       </header>
-      <router-view />
+      <router-view @updateTitle="updateTitle" />
     </main>
+
+    <!-- Tabela Responsiva -->
+    <div class="table-container">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -36,7 +44,8 @@ export default {
   data() {
     return {
       menuVisible: false,
-      pageTitle: 'Gerenciador de Dados'
+      pageTitle: 'Gerenciador de Dados', // Valor padrão
+      isCentered: false // Para controlar a centralização do header
     };
   },
   setup() {
@@ -57,6 +66,9 @@ export default {
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
     },
+    updateTitle(title) {
+      this.pageTitle = title;
+    },
     handleResize() {
       if (window.innerWidth >= 768) {
         this.menuVisible = true;
@@ -71,6 +83,28 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize);
+  },
+  watch: {
+    '$route'(to) {
+      if (to.name === 'escolas') {
+        this.pageTitle = 'Gerenciador de Escolas';
+        this.isCentered = false;
+      } else if (to.name === 'organizacao') {
+        this.pageTitle = 'Gerenciador de Organização';
+        this.isCentered = false;
+      } else if (to.name === 'alunos') {
+        this.pageTitle = 'Gerenciador de Alunos';
+        this.isCentered = false;
+      } else if (to.name === 'aulas') {
+        this.pageTitle = 'Gerenciador de Aulas';
+        this.isCentered = false;
+      } else if (to.name === 'bemVindo') {
+        this.isCentered = true; // Centraliza na página de boas-vindas
+      } else {
+        this.pageTitle = 'Gerenciador de Dados';
+        this.isCentered = false;
+      }
+    }
   }
 };
 </script>
@@ -86,11 +120,11 @@ export default {
 
 /* Menu Lateral */
 .sidebar {
-  width: 135px;
+  width: 160px;
   background-color: #1a1a1d;
   padding: 20px;
   color: white;
-  height: 100vh; /* Ajuste para ocupar toda a altura */
+  height: 100vh;
   position: fixed;
   left: 0;
   top: 0;
@@ -101,13 +135,11 @@ export default {
   opacity: 0;
 }
 
-/* Menu visível */
 .menu-visible {
   transform: translateX(0);
   opacity: 1;
 }
 
-/* Header do Menu Lateral */
 .sidebar-header {
   display: flex;
   justify-content: space-between;
@@ -118,6 +150,7 @@ export default {
 .sidebar-logo {
   max-width: 150px;
   height: auto;
+  cursor: pointer;
 }
 
 .menu-toggle {
@@ -128,7 +161,6 @@ export default {
   cursor: pointer;
 }
 
-/* Estilos do Menu Lateral */
 .sidebar ul {
   list-style: none;
   padding: 0;
@@ -150,16 +182,14 @@ export default {
   background-color: #007bff;
 }
 
-/* Conteúdo Principal */
 .main-content {
-  margin-left: 150px;
+  margin-left: 175px;
   padding: 20px;
   background-color: #f0f4f8;
   flex-grow: 1;
   transition: margin-left 0.3s ease;
 }
 
-/* Header */
 .header {
   display: flex;
   align-items: center;
@@ -170,20 +200,21 @@ export default {
   border-bottom: 2px solid #007bff;
 }
 
+.centered-header {
+  justify-content: center; /* Centraliza na página de boas-vindas */
+}
+
 .logo {
   max-width: 150px;
   height: auto;
-  margin-right: 20px;
 }
 
-/* Título */
 h1 {
   font-size: 24px;
   margin: 0;
   font-family: 'Poppins', sans-serif;
 }
 
-/* Botão de Menu */
 .menu-toggle {
   display: none;
   background: none;
@@ -194,28 +225,53 @@ h1 {
   margin-right: 20px;
 }
 
-/* Responsividade */
-@media (max-width: 1024px) {
-  .sidebar {
-    width: 180px;
-  }
+/* Estilos do ícone de menu sanduíche */
+.menu-icon {
+  color: black; /* Cor padrão do ícone */
+}
 
-  .main-content {
-    margin-left: 180px;
-  }
+.menu-icon-white {
+  color: white; /* Cor branca quando o menu está aberto */
+}
+
+/* Estilos da Tabela Responsiva */
+.table-container {
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+table th,
+table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+  background-color: #ffffff;
+}
+
+table th {
+  background-color: #007bff;
+  color: white;
+}
+
+table tbody tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
-  .sidebar {
-    width: 150px;
+  .menu-toggle {
+    display: block;
   }
 
   .main-content {
     margin-left: 0;
-  }
-
-  .menu-toggle {
-    display: block;
   }
 
   .header {
@@ -227,11 +283,33 @@ h1 {
     margin-right: 0;
     margin-bottom: 10px;
   }
-}
 
-@media (max-width: 576px) {
-  .sidebar {
-    width: 120px;
+  table thead {
+    display: none;
+  }
+
+  table,
+  table tbody,
+  table tr,
+  table td {
+    display: block;
+    width: 100%;
+  }
+
+  table td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 15px;
+    font-weight: bold;
+    text-align: left;
   }
 }
 </style>
