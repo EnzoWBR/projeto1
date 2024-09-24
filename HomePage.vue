@@ -2,21 +2,33 @@
   <div class="bem-vindo">
     <h1>BEM VINDO AO GERENCIADOR DE DADOS</h1>
     <p>Aqui você poderá gerir as informações necessárias para seu sistema operacional.</p>
-    
-    
-    <div class="anima">
-      <p>Explore nossos recursos e comece a otimizar seus processos!</p>
+
+    <div class="cards-container">
+      <div class="coluna">
+        <div class="card" @click="irParaEscolas">
+          <h2>Gerencie Escolas</h2>
+          <p>Administre todas as escolas do sistema.</p>
+        </div>
+
+        <div class="card" @click="irParaAlunos">
+          <h2>Administre Alunos</h2>
+          <p>Gerencie os alunos e suas informações.</p>
+        </div>
+      </div>
+
+      <div class="coluna">
+        <div class="card" @click="irParaAulas">
+          <h2>Organize Aulas</h2>
+          <p>Controle as aulas e seus conteúdos.</p>
+        </div>
+
+        <div class="card" @click="irParaOrganizacao">
+          <h2>Gerencie Organizações</h2>
+          <p>Administre as organizações do sistema.</p>
+        </div>
+      </div>
     </div>
 
-    <div class="imagem">
-      <img src="@/assets/wash2.jpeg" alt="Imagem de boas-vindas" />
-    </div>
-
-    <div class="botao">
-      <button @click="irParaEscolas">Comece Agora</button>
-    </div>
-
-  
     <div class="linha-azul"></div>
   </div>
 </template>
@@ -27,6 +39,15 @@ export default {
   methods: {
     irParaEscolas() {
       this.$router.push({ name: 'escolas' });
+    },
+    irParaAlunos() {
+      this.$router.push({ name: 'alunos' });
+    },
+    irParaAulas() {
+      this.$router.push({ name: 'aulas' });
+    },
+    irParaOrganizacao() {
+      this.$router.push({ name: 'organizacao' });
     }
   }
 };
@@ -49,41 +70,44 @@ export default {
   color: #666;
 }
 
-.anima {
-  margin-top: 20px;
-  font-size: 1.2em;
-  animation: fadeInUp 2s ease-in-out;
+.cards-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px; 
+  margin-top: 50px;
 }
 
-.imagem {
-  margin-top: 30px;
+.coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
 }
 
-.imagem img {
-  width: 300px;
-  height: auto;
+
+.card {
+  padding: 20px;
+  background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.botao {
-  margin-top: 40px;
-}
-
-.botao button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 15px 30px;
-  font-size: 1.2em;
-  border: none;
-  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
-  animation: bounceIn 2s;
-  transition: background-color 0.3s;
+  text-align: center;
 }
 
-.botao button:hover {
-  background-color: #45a049;
+.card h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #007bff;
+}
+
+.card p {
+  font-size: 1.2em;
+  color: #555;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -100,28 +124,6 @@ export default {
     opacity: 0;
   }
   to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes bounceIn {
-  from {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
     opacity: 1;
   }
 }
